@@ -69,10 +69,10 @@ export function renderRoad(x, y, z, road, scene){
     if(assetToLoad == null || assetToLoad == "") return;
 
     loader.load(`./assets/${assetToLoad}`, function (gltf) {
-        gltf.scene.position.y = 2 * y;
+        gltf.scene.position.y = y;
         gltf.scene.position.x = 2 * x;
         gltf.scene.position.z = 2 * z;
-        gltf.scene.rotation.y = THREE.Math.degToRad(-90 * building.dir);
+        gltf.scene.rotation.y = THREE.Math.degToRad(-90 * road.dir);
 
         scene.add(gltf.scene);
     }, undefined, function (error) {

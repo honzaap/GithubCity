@@ -33,18 +33,13 @@ for(let i = 0; i < tileTypes.length; i++){
 	for(let j = 0; j < tileTypes[0].length; j++){
 		let tileType = tileTypes[i][j];
 		if(tileType.tile === 0){
-			//tileElement.classList.add("grass");
 			// Render Grass
 		}
 		if(tileType.tile === 1){
-			//tileElement.classList.add("road");
-			//tileElement.classList.add(`type${tileType.type}`);
 			// Render Road
-			renderRoad(j + renderShift, 0, i, tileTypes[i][j], scene);
+			renderRoad(j + renderShift, -0.7, i, tileTypes[i][j], scene);
 		}
 		if(tileType.tile === 2){
-			//tileElement.classList.add("building");
-			//tileElement.style.backgroundColor = tileType.building.color;
 			// Render Building
 			renderBuilding(j + renderShift, 0, i, tileTypes[i][j], scene); 
 		}
