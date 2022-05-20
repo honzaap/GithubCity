@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { createScene, renderBuilding, renderRoad } from "./scene";
+import { createScene, renderBuilding, renderRoad, renderGrass } from "./scene";
 import { initializeTiles, findTiles, getTileTypes } from "./algo";
 import { CONTRIBS, BUILDING_TYPES, FLOOR_HEIGHT } from "./constants";
 
@@ -33,14 +33,12 @@ for(let i = 0; i < tileTypes.length; i++){
 	for(let j = 0; j < tileTypes[0].length; j++){
 		let tileType = tileTypes[i][j];
 		if(tileType.tile === 0){
-			// Render Grass
+			renderGrass(j + renderShift, -0.7, i, scene);
 		}
 		if(tileType.tile === 1){
-			// Render Road
 			renderRoad(j + renderShift, -0.7, i, tileTypes[i][j], scene);
 		}
 		if(tileType.tile === 2){
-			// Render Building
 			renderBuilding(j + renderShift, 0, i, tileTypes[i][j], scene); 
 		}
 	}

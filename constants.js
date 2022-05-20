@@ -34,3 +34,5 @@ export const ROAD_TYPES = {
     2: "road2.glb",
     3: "road3.glb"
 }
+
+export const GRASS_ASSET = "grass.glb";

@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { FLOOR_HEIGHT, ROAD_TYPES } from "./constants";
+import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES } from "./constants";
 
 export function createScene() {
     const scene = new THREE.Scene();
@@ -78,4 +78,19 @@ export function renderRoad(x, y, z, road, scene){
     }, undefined, function (error) {
         console.error(error);
     } );
+}
+
+export function renderGrass(x, y, z, scene){
+    let assetToLoad = GRASS_ASSET;
+
+    loader.load(`./assets/${assetToLoad}`, function (gltf) {
+        gltf.scene.position.y = y;
+        gltf.scene.position.x = 2 * x;
+        gltf.scene.position.z = 2 * z;
+        scene.add(gltf.scene);
+    }, undefined, function (error) {
+        console.error(error);
+    } );
+
+    // 1/3 chance to render a tree at random pos within the tile
 }
