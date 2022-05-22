@@ -33,12 +33,12 @@ for(let i = 0; i < tileTypes.length; i++){
 	for(let j = 0; j < tileTypes[0].length; j++){
 		let tileType = tileTypes[i][j];
 		if(tileType.tile === 0){
-			renderGrass(j + renderShift, -0.7, i, scene);
+			renderGrass(j + renderShift, 0, i, scene);
 		}
-		if(tileType.tile === 1){
-			renderRoad(j + renderShift, -0.7, i, tileTypes[i][j], scene);
+		else if(tileType.tile === 1){
+			renderRoad(j + renderShift, 0, i, tileTypes[i][j], scene);
 		}
-		if(tileType.tile === 2){
+		else if(tileType.tile === 2 && tileType.type === 0){
 			renderBuilding(j + renderShift, 0, i, tileTypes[i][j], scene); 
 		}
 	}

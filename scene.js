@@ -16,7 +16,7 @@ export function createScene() {
     camera.position.z = 60;
     camera.position.y = 45;
     renderer.render(scene, camera);
-    
+    renderer.outputEncoding = THREE.sRGBEncoding;
     const controls = new OrbitControls(camera, renderer.domElement);
     
     function animate(){

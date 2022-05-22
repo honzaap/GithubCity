@@ -188,7 +188,9 @@ function findBuilding(x, y, val) {
 	}
 
 	if(res.type !== -1){ // pick a building model on random depending on type
-		res.building = BUILDING_TYPES[res.type][0*Math.floor(Math.random()*BUILDING_TYPES[res.type].length)];
+		let types = BUILDING_TYPES[res.type];
+		types = types.filter(t => val >= t.min && val <= t.max);
+		res.building = types[Math.floor(Math.random() * types.length)];
 	}
 
 	return res;

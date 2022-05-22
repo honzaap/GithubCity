@@ -1,15 +1,50 @@
 export const BUILDING_TYPES = {
     0: [
         {
-            type: 0,
-            groundUrl: "placeholder0.glb",
-            floorUrl: "placeholder1.glb",
-            roofUrl: "placeholder2.glb"
+            groundUrl: "building_1x1_0.glb",
+            min: 1,
+            max: 1
+        },
+        {
+            groundUrl: "building_1x1_1.glb",
+            min: 1,
+            max: 1
+        },
+        {
+            groundUrl: "building_1x1_2_g.glb",
+            roofUrl: "building_1x1_2_r.glb",
+            min: 2,
+            max: 2
+        },
+        {
+            groundUrl: "building_1x1_3_g.glb",
+            floorUrl: "building_1x1_3_f.glb",
+            roofUrl: "building_1x1_3_r.glb",
+            min: 2,
+            max: 5
+        },
+        {
+            groundUrl: "building_1x1_4.glb",
+            min: 1,
+            max: 1
+        },
+        {
+            groundUrl: "building_1x1_5_g.glb",
+            floorUrl: "building_1x1_5_f.glb",
+            roofUrl: "building_1x1_5_r.glb",
+            min: 2,
+            max: 6  
+        },
+        {
+            groundUrl: "building_1x1_6_g.glb",
+            floorUrl: "building_1x1_6_f.glb",
+            roofUrl: "building_1x1_6_r.glb",
+            min: 4,
+            max: 20  
         }
     ],
     1: [
         {
-            type: 0,
             groundUrl: "placeholder10.glb",
             floorUrl: "placeholder11.glb",
             roofUrl: "placeholder12.glb"
@@ -17,7 +52,6 @@ export const BUILDING_TYPES = {
     ],
     2: [
         {
-            type: 0,
             groundUrl: "placeholder20.glb",
             floorUrl: "placeholder21.glb",
             roofUrl: "placeholder22.glb"
