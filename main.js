@@ -32,13 +32,13 @@ const tileTypes = getTileTypes();
 for(let i = 0; i < tileTypes.length; i++){
 	for(let j = 0; j < tileTypes[0].length; j++){
 		let tileType = tileTypes[i][j];
-		if(tileType.tile === 0){
+		if(tileType.tile === 0){ // Render grass tiles
 			renderGrass(j + renderShift, 0, i, scene);
 		}
-		else if(tileType.tile === 1){
+		else if(tileType.tile === 1){ // Render road tiles
 			renderRoad(j + renderShift, 0, i, tileTypes[i][j], scene);
 		}
-		else if(tileType.tile === 2 && tileType.type === 0){
+		else if(tileType.tile === 2 && tileType.type !== 2){ // Render building tiles
 			renderBuilding(j + renderShift, 0, i, tileTypes[i][j], scene); 
 		}
 	}

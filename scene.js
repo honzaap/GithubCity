@@ -92,5 +92,5 @@ export function renderGrass(x, y, z, scene){
         console.error(error);
     } );
 
-    // 1/3 chance to render a tree at random pos within the tile
+    // TODO: 1/3 chance to render a tree at random pos within the tile
 }
