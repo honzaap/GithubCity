@@ -38,8 +38,8 @@ for(let i = 0; i < tileTypes.length; i++){
 		else if(tileType.tile === 1){ // Render road tiles
 			renderRoad(j + renderShift, 0, i, tileTypes[i][j], scene);
 		}
-		else if(tileType.tile === 2 && tileType.type !== 2){ // Render building tiles
-			renderBuilding(j + renderShift, 0, i, tileTypes[i][j], scene); 
-		}
+		//else if(tileType.tile === 2){ // Render building tiles
+		//	renderBuilding(j + renderShift, 0, i, tileTypes[i][j], scene); 
+		//}
 	}
 }
