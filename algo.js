@@ -1,17 +1,26 @@
-import { CONTRIBS, BUILDING_TYPES } from "./constants";
+/*
+ *	Algorithms for making the city layout
+ */
 
-let rowLength = 53;
-let colLength = 7;
+import { BUILDING_TYPES } from "./constants";
+
+let rowLength = -1;
+let colLength = -1;
 
 const tileTypes = [];
 const seenTiles = [];
 
+let contribs = [];
+
 // Look through contributions and assign tileType and seenTile to all positions
-export function initializeTiles() {
-    for(let i = 0; i < CONTRIBS.length; i++){
+export function initializeTiles(initContribs) {
+	contribs = initContribs;
+	colLength = contribs.length;
+	rowLength = contribs[0].length;
+    for(let i = 0; i < contribs.length; i++){
         let seenRow = [];
         let typesRow = [];
-        for(let j = 0; j < CONTRIBS[0].length; j++){
+        for(let j = 0; j < contribs[0].length; j++){
             seenRow.push(0);
             typesRow.push(-1);
         }
@@ -30,7 +39,7 @@ export function getSeenTiles() {
 
 // Get contributions value for given coordinates
 function getValue(x, y){
-	return isInBounds(x, y) ? CONTRIBS[y][x] : -1;
+	return isInBounds(x, y) ? contribs[y][x] : -1;
 }
 
 // Get tile type for given coordinate
@@ -161,8 +170,8 @@ function findBuilding(x, y, val) {
 // Start the algorithm - find and set all tile types
 export function findTiles(){
 	// Remove any 2x2 squares by replacing tiles with grass
-	for(let y = 1; y < CONTRIBS.length; y+=2){
-		for(let x = 1; x < CONTRIBS[y].length; x++){
+	for(let y = 1; y < contribs.length; y+=2){
+		for(let x = 1; x < contribs[y].length; x++){
 			if(getValue(x, y) === 0 && is2x2Square(x, y)){
 				tileTypes[y][x] = { tile: 0 };
 				x++;
@@ -170,8 +179,8 @@ export function findTiles(){
 		}
 	}
 
-    for(let y = 0; y < CONTRIBS.length; y++){
-        for(let x = 0; x < CONTRIBS[y].length; x++){
+    for(let y = 0; y < contribs.length; y++){
+        for(let x = 0; x < contribs[y].length; x++){
             // Find roads
 			if(getValue(x, y) === 0 && getType(x, y).tile !== 0){
 				let road = findRoad(x, y);
