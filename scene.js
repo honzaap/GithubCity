@@ -5,35 +5,86 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES } from "./constants";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
+import { BEACH_ASSET, FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, SEA_ASSET } from "./constants";
+
+// Global GLTF loader
+const loader = new GLTFLoader();
 
 export function createScene() {
+    // Create scene
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 400);
     const renderer = new THREE.WebGLRenderer({
-        antialias: false,
+        antialias: true,
         canvas: document.querySelector("#bg")
     });
     
+    // Configure scene and camera
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
+
     camera.position.z = 60;
     camera.position.y = 45;
+
     renderer.render(scene, camera);
     renderer.outputEncoding = THREE.sRGBEncoding;
+
+    // Setup controls
     const controls = new OrbitControls(camera, renderer.domElement);
+
+    // Setup postprocessing
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+
+    // Ambient lighting 
+    const ambientLight = new THREE.AmbientLight(0x202020);
+    scene.add(ambientLight);
+
+    // Directional lighting
+    const directionLight = new THREE.DirectionalLight(0xf0e8c0);
+    directionLight.position.set(-30, 50, 40);
+    scene.add(directionLight);
+
+    // Todo: add a background
+    const sceneBackground = new THREE.Color(0xfff6e0);
+    scene.background = sceneBackground;
+
+    // Render beach
+    loader.load(`./assets/${BEACH_ASSET}`, function(gltf) {
+        const beach = gltf.scene;
+        beach.position.y = -1;
+        beach.position.x = -5;
+        beach.position.z = 5;
+        scene.add(beach);
+    });
+
+    // Render and animate the sea
+    let seaMixer;
+    loader.load(`./assets/${SEA_ASSET}`, function(gltf) {
+        const sea = gltf.scene;
+        sea.position.y = -5;
+        scene.add(sea);
+        seaMixer = new THREE.AnimationMixer(sea);
+        const clips = gltf.animations;
+        const action = seaMixer.clipAction(clips[0]);
+        action.play();
+    });
     
+    const clock = new THREE.Clock();
+
+    // Animation loop
     function animate(){
+        if(seaMixer) seaMixer.update(clock.getDelta());
         requestAnimationFrame(animate);
         controls.update();
-        renderer.render(scene, camera);
+        composer.render();
     }
     animate();
 
     return scene;
 }
-
-const loader = new GLTFLoader();
 
 export function renderBuilding(x, y, z, building, scene){
 	for(let i = 0; i < building.value; i++){

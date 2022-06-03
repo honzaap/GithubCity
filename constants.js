@@ -139,4 +139,8 @@ export const ROAD_TYPES = {
 
 export const GRASS_ASSET = "grass.glb";
 
+export const SEA_ASSET = "sea.glb";
+
+export const BEACH_ASSET = "beach.glb";
+
 export const AWS_API_URL = "https://uvdvlzzjiciqsfkl7u37nnhnsm0sleur.lambda-url.eu-central-1.on.aws";
