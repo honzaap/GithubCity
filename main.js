@@ -1,11 +1,11 @@
-import * as THREE from "three";
 import { createScene, renderBuilding, renderRoad, renderGrass } from "./scene";
 import { initializeTiles, findTiles, getTileTypes } from "./algo";
 import { fetchContributions, getConvertedContributions } from "./api";
 
 // Create 3D environment
 const scene = createScene();
-const renderShift = -28; 
+const renderShiftX = -26; 
+const renderShiftY = -4;
 
 //scene.add(ground);
 
@@ -32,13 +32,13 @@ for(let i = 0; i < tileTypes.length; i++){
 	for(let j = 0; j < tileTypes[0].length; j++){
 		let tileType = tileTypes[i][j];
 		if(tileType.tile === 0){ // Render grass tiles
-			renderGrass(j + renderShift, 0, i, scene);
+			renderGrass(j + renderShiftX, 0, i + renderShiftY, scene);
 		}
 		else if(tileType.tile === 1){ // Render road tiles
-			renderRoad(j + renderShift, 0, i, tileTypes[i][j], scene);
+			renderRoad(j + renderShiftX, 0, i + renderShiftY, tileTypes[i][j], scene);
 		}
 		else if(tileType.tile === 2){ // Render building tiles
-			renderBuilding(j + renderShift, 0, i, tileTypes[i][j], scene); 
+			renderBuilding(j + renderShiftX, 0, i + renderShiftY, tileTypes[i][j], scene); 
 		}
 	}
 }

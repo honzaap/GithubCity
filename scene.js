@@ -7,7 +7,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
-import { BEACH_ASSET, FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, SEA_ASSET } from "./constants";
+import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET } from "./constants";
 
 // Global GLTF loader
 const loader = new GLTFLoader();
@@ -25,11 +25,13 @@ export function createScene() {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    camera.position.z = 60;
-    camera.position.y = 45;
+    camera.position.set(0, 30, 51);
 
+    // Setup renderer (material encoding, shadows.. )
     renderer.render(scene, camera);
     renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     // Setup controls
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -42,41 +44,34 @@ export function createScene() {
     const ambientLight = new THREE.AmbientLight(0x202020);
     scene.add(ambientLight);
 
-    // Directional lighting
-    const directionLight = new THREE.DirectionalLight(0xf0e8c0);
-    directionLight.position.set(-30, 50, 40);
+    // Directional lighting and shadows
+    const directionLight = new THREE.DirectionalLight(0xf5f5f5);
+    directionLight.position.set(-50, 50, -20);
+    directionLight.castShadow = true;
+    directionLight.shadow.mapSize.x = 512; // Tweak for best quality/performace settings
+    directionLight.shadow.mapSize.y = 512; // Tweak for best quality/performace settings
+    directionLight.shadow.camera.near = 0.1;
+    directionLight.shadow.camera.far = 400.0;
+    directionLight.shadow.camera.right =  50;
+    directionLight.shadow.camera.left = -50;
+    directionLight.shadow.camera.top =  50;
+    directionLight.shadow.camera.bottom = -50;
     scene.add(directionLight);
 
     // Todo: add a background
     const sceneBackground = new THREE.Color(0xfff6e0);
     scene.background = sceneBackground;
 
-    // Render beach
-    loader.load(`./assets/${BEACH_ASSET}`, function(gltf) {
-        const beach = gltf.scene;
-        beach.position.y = -1;
-        beach.position.x = -5;
-        beach.position.z = 5;
-        scene.add(beach);
-    });
-
-    // Render and animate the sea
-    let seaMixer;
-    loader.load(`./assets/${SEA_ASSET}`, function(gltf) {
-        const sea = gltf.scene;
-        sea.position.y = -5;
-        scene.add(sea);
-        seaMixer = new THREE.AnimationMixer(sea);
-        const clips = gltf.animations;
-        const action = seaMixer.clipAction(clips[0]);
-        action.play();
+    // Render environment
+    loader.load(`./assets/${ENVIRONMENT_ASSET}`, function(gltf) {
+        const env = gltf.scene;
+        env.position.set(0, -4, 0);
+        setShadow(gltf.scene, false, true);
+        scene.add(env);
     });
     
-    const clock = new THREE.Clock();
-
     // Animation loop
     function animate(){
-        if(seaMixer) seaMixer.update(clock.getDelta());
         requestAnimationFrame(animate);
         controls.update();
         composer.render();
@@ -84,6 +79,17 @@ export function createScene() {
     animate();
 
     return scene;
+}
+
+// Set's shadows on given object to given settings
+function setShadow(obj, cast = false, receive = false){
+    obj.castShadow = cast;
+    obj.receiveShadow = receive;    
+    if(obj?.children != null){
+        for(let child of obj.children){
+            setShadow(child, cast, receive);
+        }
+    }
 }
 
 export function renderBuilding(x, y, z, building, scene){
@@ -98,6 +104,8 @@ export function renderBuilding(x, y, z, building, scene){
             let isLShaped = building.type === 2;
             let extraShift = isLShaped ? 2 * (building.dir % 2) : 0;
             let extraAngle = 0;
+
+            setShadow(gltf.scene, true, false);
 
             gltf.scene.position.y = 2 * y + i * FLOOR_HEIGHT * 2;
             gltf.scene.position.x = 2 * x + extraShift;
@@ -129,6 +137,8 @@ export function renderRoad(x, y, z, road, scene){
         gltf.scene.position.z = 2 * z;
         gltf.scene.rotation.y = THREE.Math.degToRad(-90 * road.dir);
 
+        setShadow(gltf.scene, false, true);
+
         scene.add(gltf.scene);
     }, undefined, function (error) {
         console.error(error);
@@ -142,6 +152,9 @@ export function renderGrass(x, y, z, scene){
         gltf.scene.position.y = y;
         gltf.scene.position.x = 2 * x;
         gltf.scene.position.z = 2 * z;
+
+        setShadow(gltf.scene, false, true);
+
         scene.add(gltf.scene);
     }, undefined, function (error) {
         console.error(error);

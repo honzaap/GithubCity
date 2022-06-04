@@ -12,7 +12,7 @@ export const BUILDING_TYPES = {
             max: 15
         },
         {
-            groundUrl: "building_1x1_1.glb",
+            groundUrl: "building_1x1_1_g.glb",
             min: 1,
             max: 1
         },
@@ -30,7 +30,7 @@ export const BUILDING_TYPES = {
             max: 5
         },
         {
-            groundUrl: "building_1x1_4.glb",
+            groundUrl: "building_1x1_4_g.glb",
             min: 1,
             max: 1
         },
@@ -52,7 +52,7 @@ export const BUILDING_TYPES = {
             groundUrl: "building_1x1_7_g.glb",
             floorUrl: "building_1x1_7_f.glb",
             roofUrl: "building_1x1_7_r.glb",
-            min: 5,
+            min: 4,
             max: 999  
         },
         {
@@ -61,7 +61,36 @@ export const BUILDING_TYPES = {
             roofUrl: "building_1x1_8_r.glb",
             min: 5,
             max: 999  
+        },
+        {
+            groundUrl: "building_1x1_9_g.glb",
+            floorUrl: "building_1x1_9_f.glb",
+            roofUrl: "building_1x1_9_r.glb",
+            min: 5,
+            max: 999  
+        },
+        {
+            groundUrl: "building_1x1_10_g.glb",
+            floorUrl: "building_1x1_10_f.glb",
+            roofUrl: "building_1x1_10_r.glb",
+            min: 4,
+            max: 999  
+        },
+        {
+            groundUrl: "building_1x1_11_g.glb",
+            floorUrl: "building_1x1_11_f.glb",
+            roofUrl: "building_1x1_11_r.glb",
+            min: 5,
+            max: 999  
+        },
+        {
+            groundUrl: "building_1x1_12_g.glb",
+            floorUrl: "building_1x1_12_f.glb",
+            roofUrl: "building_1x1_12_r.glb",
+            min: 4,
+            max: 999  
         }
+        
     ],
     1: [
         {
@@ -92,7 +121,7 @@ export const BUILDING_TYPES = {
             groundUrl: "building_1x2_4_g.glb",
             floorUrl: "building_1x2_4_f.glb",
             roofUrl: "building_1x2_4_r.glb",
-            min: 5,
+            min: 4,
             max: 15  
         },
         {
@@ -106,13 +135,20 @@ export const BUILDING_TYPES = {
             groundUrl: "building_1x2_6_g.glb",
             floorUrl: "building_1x2_6_f.glb",
             roofUrl: "building_1x2_6_r.glb",
-            min: 5,
+            min: 3,
             max: 999  
         },
         {
             groundUrl: "building_1x2_7_g.glb",
             floorUrl: "building_1x2_7_f.glb",
             roofUrl: "building_1x2_7_r.glb",
+            min: 4,
+            max: 999  
+        },
+        {
+            groundUrl: "building_1x2_8_g.glb",
+            floorUrl: "building_1x2_8_f.glb",
+            roofUrl: "building_1x2_8_r.glb",
             min: 5,
             max: 999  
         }
@@ -139,8 +175,6 @@ export const ROAD_TYPES = {
 
 export const GRASS_ASSET = "grass.glb";
 
-export const SEA_ASSET = "sea.glb";
-
-export const BEACH_ASSET = "beach.glb";
+export const ENVIRONMENT_ASSET = "environment.glb";
 
 export const AWS_API_URL = "https://uvdvlzzjiciqsfkl7u37nnhnsm0sleur.lambda-url.eu-central-1.on.aws";
