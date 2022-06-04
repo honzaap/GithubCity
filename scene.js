@@ -35,6 +35,13 @@ export function createScene() {
 
     // Setup controls
     const controls = new OrbitControls(camera, renderer.domElement);
+    controls.autoRotate = false; // Todo: Bind to a toggle button
+    controls.autoRotateSpeed = -2;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.1;
+    controls.enablePan = false;
+    controls.minDistance = 30;
+    controls.maxDistance = 150;
 
     // Setup postprocessing
     const composer = new EffectComposer(renderer);
