@@ -177,4 +177,6 @@ export const GRASS_ASSET = "grass.glb";
 
 export const ENVIRONMENT_ASSET = "environment.glb";
 
+export const CLOUD_ASSET = "cloud.glb";
+
 export const AWS_API_URL = "https://uvdvlzzjiciqsfkl7u37nnhnsm0sleur.lambda-url.eu-central-1.on.aws";

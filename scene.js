@@ -7,7 +7,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
-import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET } from "./constants";
+import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET, CLOUD_ASSET } from "./constants";
 
 // Global GLTF loader
 const loader = new GLTFLoader();
@@ -16,11 +16,12 @@ export function createScene() {
     // Create scene
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 400);
+    camera.layers.enableAll();
     const renderer = new THREE.WebGLRenderer({
         antialias: true,
         canvas: document.querySelector("#bg")
     });
-    
+
     // Configure scene and camera
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -66,7 +67,7 @@ export function createScene() {
     scene.add(directionLight);
 
     // Todo: add a background
-    const sceneBackground = new THREE.Color(0xfff6e0);
+    const sceneBackground = new THREE.Color(0xffffff);
     scene.background = sceneBackground;
 
     // Render environment
@@ -76,11 +77,16 @@ export function createScene() {
         setShadow(gltf.scene, false, true);
         scene.add(env);
     });
+
+    const updateClouds = createClouds(scene);
     
+    setBoundaries(scene);
+
     // Animation loop
     function animate(){
         requestAnimationFrame(animate);
         controls.update();
+        updateClouds();
         composer.render();
     }
     animate();
@@ -168,4 +174,76 @@ export function renderGrass(x, y, z, scene){
     } );
 
     // TODO: 1/3 chance to render a tree at random pos within the tile
+}
+
+// Create and add boundaries around environment into scene
+function setBoundaries(scene){
+    // the inside of the hole
+    let geoH = new THREE.BoxGeometry(120, 60, .1);
+    let geoV = new THREE.BoxGeometry(0.1, 60, 120);
+    let material = new THREE.MeshLambertMaterial({
+        transparent : true,
+        color: 0xffffff,
+        side: THREE.FrontSide,
+        emissive: 0xffffff
+    }); 
+
+    // Front 👆
+    let sidesFront = [null,null,null,null,material,null];
+    let boundaryFront = new THREE.Mesh(geoH, sidesFront);
+    boundaryFront.position.set(0, 30, -60);
+    scene.add(boundaryFront);
+
+    // Back 👇
+    let sidesBack = [null,null,null,null,null,material];
+    let boundaryBack = new THREE.Mesh(geoH, sidesBack);
+    boundaryBack.position.set(0, 30, 60);
+    scene.add(boundaryBack);
+
+    // Right 👉
+    let sidesRight = [null,material,null,null,null,null];
+    let boundaryRight = new THREE.Mesh(geoV, sidesRight);
+    boundaryRight.position.set(60, 30, 0);
+    scene.add(boundaryRight);
+
+    // Left 👈
+    let sidesLeft = [material,null,null,null,null,null];
+    let boundaryLeft = new THREE.Mesh(geoV, sidesLeft);
+    boundaryLeft.position.set(-60, 30, 0);
+    scene.add(boundaryLeft);
+}
+
+// Creates and animates clouds ☁
+function createClouds(scene) {
+    let clouds = [];
+    const CLOUD_COUNT = 4;
+    for(let i = 0; i < CLOUD_COUNT; i++) {
+        loader.load(`./assets/${CLOUD_ASSET}`, function(gltf) {
+            let cloud = gltf.scene;
+            let x = -40 * (Math.random() * 0.3 + 0.8) + (i * (Math.random() * 0.3 + 0.7) * 30)
+            let z = -60 + 120 * Math.random();
+            let y = 15 + 8 * Math.random();
+            cloud.position.set(x, y, z);
+            cloud.rotation.y = Math.random() * 30;
+            gltf.scene.children[0].material.opacity = 0.8;
+            gltf.scene.children[0].material.transparent = true;
+
+            setShadow(cloud, false, false);
+            cloud.fadeOut = () => {
+                cloud.position.set(x, y, 70);
+            }
+
+            clouds.push(cloud);
+            scene.add(cloud);
+        });
+    }
+    const updateClouds = () => {
+        for(let cloud of clouds){
+            cloud.position.z -= 0.04;
+            if(cloud.position.z <= -65){
+                cloud.fadeOut();
+            }
+        } 
+    }
+    return updateClouds
 }
