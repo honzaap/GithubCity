@@ -1,5 +1,5 @@
 /*
- *  Functions for rendering the city
+ *  Things that handle all the 3D stuff 
  */
 
 import * as THREE from "three";
@@ -15,72 +15,20 @@ const loader = new GLTFLoader();
 export function createScene() {
     // Create scene
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 400);
-    camera.layers.enableAll();
-    const renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        canvas: document.querySelector("#bg")
-    });
+    const camera = createCamera();
+    const renderer = createRenderer(scene, camera);
 
-    // Configure scene and camera
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    setupLighting(scene);
 
-    camera.position.set(0, 30, 51);
+    setupEnvironment(scene);
 
-    // Setup renderer (material encoding, shadows.. )
-    renderer.render(scene, camera);
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-    // Setup controls
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.autoRotate = false; // Todo: Bind to a toggle button
-    controls.autoRotateSpeed = -2;
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.1;
-    controls.enablePan = false;
-    controls.minDistance = 30;
-    controls.maxDistance = 150;
-
-    // Setup postprocessing
-    const composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-
-    // Ambient lighting 
-    const ambientLight = new THREE.AmbientLight(0x202020);
-    scene.add(ambientLight);
-
-    // Directional lighting and shadows
-    const directionLight = new THREE.DirectionalLight(0xf5f5f5);
-    directionLight.position.set(-50, 50, -20);
-    directionLight.castShadow = true;
-    directionLight.shadow.mapSize.x = 512; // Tweak for best quality/performace settings
-    directionLight.shadow.mapSize.y = 512; // Tweak for best quality/performace settings
-    directionLight.shadow.camera.near = 0.1;
-    directionLight.shadow.camera.far = 400.0;
-    directionLight.shadow.camera.right =  50;
-    directionLight.shadow.camera.left = -50;
-    directionLight.shadow.camera.top =  50;
-    directionLight.shadow.camera.bottom = -50;
-    scene.add(directionLight);
-
-    // Todo: add a background
-    const sceneBackground = new THREE.Color(0xffffff);
-    scene.background = sceneBackground;
-
-    // Render environment
-    loader.load(`./assets/${ENVIRONMENT_ASSET}`, function(gltf) {
-        const env = gltf.scene;
-        env.position.set(0, -4, 0);
-        setShadow(gltf.scene, false, true);
-        scene.add(env);
-    });
+    const controls = createControls(camera, renderer);
 
     const updateClouds = createClouds(scene);
     
     setBoundaries(scene);
+
+    const composer = setupPostProcessing(scene, camera, renderer);
 
     // Animation loop
     function animate(){
@@ -94,7 +42,7 @@ export function createScene() {
     return scene;
 }
 
-// Set's shadows on given object to given settings
+// Set shadows on given object to given settings
 function setShadow(obj, cast = false, receive = false){
     obj.castShadow = cast;
     obj.receiveShadow = receive;    
@@ -176,6 +124,89 @@ export function renderGrass(x, y, z, scene){
     // TODO: 1/3 chance to render a tree at random pos within the tile
 }
 
+// Create and cofigure camera and return it 
+function createCamera() {
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 400);
+    camera.position.set(0, 30, 51);
+
+    return camera;
+}
+
+// Create and configure renderer and return it 
+function createRenderer(scene, camera) {
+    const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        canvas: document.querySelector("#bg")
+    });
+
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    renderer.render(scene, camera);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    return renderer;
+}
+
+// Create and configure controls and return it 
+function createControls(camera, renderer) {
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.autoRotate = false; // Todo: Bind to a toggle button
+    controls.autoRotateSpeed = -2;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.1;
+    controls.enablePan = false;
+    controls.minDistance = 30;
+    controls.maxDistance = 150;
+
+    return controls;
+}
+
+// Configure postprocessing and return composer
+function setupPostProcessing(scene, camera, renderer) {
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+
+    return composer;
+}
+
+// Create and configure lighting in the scene  
+function setupLighting(scene) {
+    // Ambient lighting 
+    const ambientLight = new THREE.AmbientLight(0x202020);
+    scene.add(ambientLight);
+
+    // Directional lighting and shadows
+    const directionLight = new THREE.DirectionalLight(0xf5f5f5);
+    directionLight.position.set(-50, 50, -20);
+    directionLight.castShadow = true;
+    directionLight.shadow.mapSize.x = 512; // Tweak for best quality/performace settings
+    directionLight.shadow.mapSize.y = 512; // Tweak for best quality/performace settings
+    directionLight.shadow.camera.near = 0.1;
+    directionLight.shadow.camera.far = 400.0;
+    directionLight.shadow.camera.right =  50;
+    directionLight.shadow.camera.left = -50;
+    directionLight.shadow.camera.top =  50;
+    directionLight.shadow.camera.bottom = -50;
+    scene.add(directionLight);
+}
+
+// Create and setup anything environment-related 
+function setupEnvironment(scene) {
+    const sceneBackground = new THREE.Color(0xffffff);
+    scene.background = sceneBackground;
+
+    // Render environment (ground)
+    loader.load(`./assets/${ENVIRONMENT_ASSET}`, function(gltf) {
+        const env = gltf.scene;
+        env.position.set(0, -4, 0);
+        setShadow(gltf.scene, false, true);
+        scene.add(env);
+    });
+}
+
 // Create and add boundaries around environment into scene
 function setBoundaries(scene){
     // the inside of the hole
@@ -245,5 +276,5 @@ function createClouds(scene) {
             }
         } 
     }
-    return updateClouds
+    return updateClouds;
 }
