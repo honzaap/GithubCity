@@ -7,7 +7,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
-import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET, CLOUD_ASSET } from "./constants";
+import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET, CLOUD_ASSET, ENVIRONMENT_OBJECTS_ASSET } from "./constants";
 
 // Global GLTF loader
 const loader = new GLTFLoader();
@@ -157,7 +157,7 @@ function createControls(camera, renderer) {
     controls.autoRotateSpeed = -2;
     controls.enableDamping = true;
     controls.dampingFactor = 0.1;
-    controls.enablePan = false;
+    controls.enablePan = true;
     controls.minDistance = 30;
     controls.maxDistance = 150;
 
@@ -205,11 +205,18 @@ function setupEnvironment(scene) {
         setShadow(gltf.scene, false, true);
         scene.add(env);
     });
+
+    // Render environment (objects and other stuff)
+    loader.load(`./assets/${ENVIRONMENT_OBJECTS_ASSET}`, function(gltf) {
+        const env_objects = gltf.scene;
+        env_objects.position.set(0, -4, 0);
+        setShadow(gltf.scene, true, false);
+        scene.add(env_objects);
+    });
 }
 
 // Create and add boundaries around environment into scene
 function setBoundaries(scene){
-    // the inside of the hole
     let geoH = new THREE.BoxGeometry(120, 60, .1);
     let geoV = new THREE.BoxGeometry(0.1, 60, 120);
     let material = new THREE.MeshLambertMaterial({
@@ -270,7 +277,7 @@ function createClouds(scene) {
     }
     const updateClouds = () => {
         for(let cloud of clouds){
-            cloud.position.z -= 0.04;
+            cloud.position.z -= 0.01;
             if(cloud.position.z <= -65){
                 cloud.fadeOut();
             }

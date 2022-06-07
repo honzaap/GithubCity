@@ -6,7 +6,7 @@ import { fetchContributions, getConvertedContributions } from "./api";
 const scene = createScene();
 const renderShiftX = -26; 
 const renderShiftY = -4;
-const renderShiftZ = 0.35;
+const renderShiftZ = 0.38;
 
 //scene.add(ground);
 
@@ -36,7 +36,7 @@ for(let i = 0; i < tileTypes.length; i++){
 			renderGrass(j + renderShiftX, 0, i + renderShiftY, scene);
 		}
 		else if(tileType.tile === 1){ // Render road tiles
-			renderRoad(j + renderShiftX, 0, i + renderShiftY, tileTypes[i][j], scene);
+			renderRoad(j + renderShiftX, -.015, i + renderShiftY, tileTypes[i][j], scene);
 		}
 		else if(tileType.tile === 2){ // Render building tiles
 			renderBuilding(j + renderShiftX, renderShiftZ, i + renderShiftY, tileTypes[i][j], scene); 
