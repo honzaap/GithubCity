@@ -26,8 +26,6 @@ export function createScene() {
 
     const updateClouds = createClouds(scene);
     
-    setBoundaries(scene);
-
     const composer = setupPostProcessing(scene, camera, renderer);
 
     // Animation loop
@@ -206,7 +204,7 @@ function setupLighting(scene) {
 
 // Create and setup anything environment-related 
 function setupEnvironment(scene) {
-    const sceneBackground = new THREE.Color(0xffffff);
+    const sceneBackground = new THREE.Color(0xA7C5EB);
     scene.background = sceneBackground;
 
     // Render environment (ground)
@@ -226,42 +224,6 @@ function setupEnvironment(scene) {
     });
 }
 
-// Create and add boundaries around environment into scene
-function setBoundaries(scene){
-    let geoH = new THREE.BoxGeometry(120, 60, .1);
-    let geoV = new THREE.BoxGeometry(0.1, 60, 120);
-    let material = new THREE.MeshLambertMaterial({
-        transparent : true,
-        color: 0xffffff,
-        side: THREE.FrontSide,
-        emissive: 0xffffff
-    }); 
-
-    // Front 👆
-    let sidesFront = [null,null,null,null,material,null];
-    let boundaryFront = new THREE.Mesh(geoH, sidesFront);
-    boundaryFront.position.set(0, 30, -60);
-    scene.add(boundaryFront);
-
-    // Back 👇
-    let sidesBack = [null,null,null,null,null,material];
-    let boundaryBack = new THREE.Mesh(geoH, sidesBack);
-    boundaryBack.position.set(0, 30, 60);
-    scene.add(boundaryBack);
-
-    // Right 👉
-    let sidesRight = [null,material,null,null,null,null];
-    let boundaryRight = new THREE.Mesh(geoV, sidesRight);
-    boundaryRight.position.set(60, 30, 0);
-    scene.add(boundaryRight);
-
-    // Left 👈
-    let sidesLeft = [material,null,null,null,null,null];
-    let boundaryLeft = new THREE.Mesh(geoV, sidesLeft);
-    boundaryLeft.position.set(-60, 30, 0);
-    scene.add(boundaryLeft);
-}
-
 // Creates and animates clouds ☁
 function createClouds(scene) {
     let clouds = [];
@@ -278,7 +240,7 @@ function createClouds(scene) {
             gltf.scene.children[0].material.transparent = true;
 
             setShadow(cloud, false, false);
-            cloud.fadeOut = () => {
+            cloud.resetPosition = () => {
                 cloud.position.set(x, y, 70);
             }
 
@@ -289,8 +251,22 @@ function createClouds(scene) {
     const updateClouds = () => {
         for(let cloud of clouds){
             cloud.position.z -= 0.01;
+            if(cloud.fadingIn){
+                cloud.children[0].material.opacity += 0.01;
+                if(cloud.children[0].material.opacity >= 0.8){
+                    cloud.fadingIn = false;
+                }
+            }
+            if(cloud.fadingOut){
+                cloud.children[0].material.opacity -= 0.01;
+                if(cloud.children[0].material.opacity <= 0){
+                    cloud.fadingOut = false;
+                    cloud.fadingIn = true;
+                    cloud.resetPosition();
+                }
+            }
             if(cloud.position.z <= -65){
-                cloud.fadeOut();
+                cloud.fadingOut = true;
             }
         } 
     }
