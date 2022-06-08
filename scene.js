@@ -7,7 +7,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
-import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET, CLOUD_ASSET, ENVIRONMENT_OBJECTS_ASSET } from "./constants";
+import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET, CLOUD_ASSET, ENVIRONMENT_OBJECTS_ASSET, TREES_SMALL } from "./constants";
 
 // Global GLTF loader
 const loader = new GLTFLoader();
@@ -68,9 +68,9 @@ export function renderBuilding(x, y, z, building, scene){
 
             setShadow(gltf.scene, true, false);
 
-            gltf.scene.position.y = 2 * y + i * FLOOR_HEIGHT * 2;
-            gltf.scene.position.x = 2 * x + extraShift;
-            gltf.scene.position.z = 2 * z + extraShift;
+            gltf.scene.position.y = y + i * FLOOR_HEIGHT * 2;
+            gltf.scene.position.x = x + extraShift;
+            gltf.scene.position.z = z + extraShift;
             if(building.mirror){
                 gltf.scene.scale.z *= -1; // mirror the object
                 extraAngle = 270; // add extra angle to compensate shift from mirroring
@@ -94,8 +94,8 @@ export function renderRoad(x, y, z, road, scene){
 
     loader.load(`./assets/${assetToLoad}`, function (gltf) {
         gltf.scene.position.y = y;
-        gltf.scene.position.x = 2 * x;
-        gltf.scene.position.z = 2 * z;
+        gltf.scene.position.x = x;
+        gltf.scene.position.z = z;
         gltf.scene.rotation.y = THREE.Math.degToRad(-90 * road.dir);
 
         setShadow(gltf.scene, false, true);
@@ -111,8 +111,8 @@ export function renderGrass(x, y, z, scene){
 
     loader.load(`./assets/${assetToLoad}`, function (gltf) {
         gltf.scene.position.y = y;
-        gltf.scene.position.x = 2 * x;
-        gltf.scene.position.z = 2 * z;
+        gltf.scene.position.x = x;
+        gltf.scene.position.z = z;
 
         setShadow(gltf.scene, false, true);
 
@@ -121,7 +121,18 @@ export function renderGrass(x, y, z, scene){
         console.error(error);
     } );
 
-    // TODO: 1/3 chance to render a tree at random pos within the tile
+    // Create a tree somewhere on the tile 
+    for(let i of [-0.7, 0.7]){
+        loader.load(`./assets/${TREES_SMALL[Math.floor(TREES_SMALL.length * Math.random())]}`, function(gltf) {
+            gltf.scene.position.x = x + Math.random() * i;
+            gltf.scene.position.y = y;
+            gltf.scene.position.z = z + Math.random() * i;
+    
+            setShadow(gltf.scene, true, false);
+    
+            scene.add(gltf.scene);
+        })
+    }
 }
 
 // Create and cofigure camera and return it 

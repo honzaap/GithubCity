@@ -173,6 +173,8 @@ export const ROAD_TYPES = {
     3: "road3.glb"
 }
 
+export const TREES_SMALL = ["tree_small_0.glb", "tree_small_1.glb", "tree_small_2.glb"];
+
 export const GRASS_ASSET = "grass.glb";
 
 export const ENVIRONMENT_ASSET = "environment.glb";
