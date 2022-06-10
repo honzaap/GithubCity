@@ -7,7 +7,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
-import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET, CLOUD_ASSET, ENVIRONMENT_OBJECTS_ASSET, TREES_SMALL } from "./constants";
+import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET, CLOUD_ASSET, ENVIRONMENT_OBJECTS_ASSET, TREES_SMALL, ENVIRONMENT_ANIMATED_ASSET } from "./constants";
 
 // Global GLTF loader
 const loader = new GLTFLoader();
@@ -20,18 +20,23 @@ export function createScene() {
 
     setupLighting(scene);
 
-    setupEnvironment(scene);
+    const updateMixer = setupEnvironment(scene);
 
     const controls = createControls(camera, renderer);
 
     const updateClouds = createClouds(scene);
     
     const composer = setupPostProcessing(scene, camera, renderer);
+    
+    const clock = new THREE.Clock();
 
     // Animation loop
     function animate(){
+        const delta = clock.getDelta();
+
         requestAnimationFrame(animate);
         controls.update();
+        updateMixer(delta);
         updateClouds();
         composer.render();
     }
@@ -207,10 +212,12 @@ function setupEnvironment(scene) {
     const sceneBackground = new THREE.Color(0xA7C5EB);
     scene.background = sceneBackground;
 
+    const position = new THREE.Vector3(0, -4, 0);
+
     // Render environment (ground)
     loader.load(`./assets/${ENVIRONMENT_ASSET}`, function(gltf) {
         const env = gltf.scene;
-        env.position.set(0, -4, 0);
+        env.position.set(...position);
         setShadow(gltf.scene, false, true);
         scene.add(env);
     });
@@ -218,10 +225,34 @@ function setupEnvironment(scene) {
     // Render environment (objects and other stuff)
     loader.load(`./assets/${ENVIRONMENT_OBJECTS_ASSET}`, function(gltf) {
         const env_objects = gltf.scene;
-        env_objects.position.set(0, -4, 0);
+        env_objects.position.set(...position);
         setShadow(gltf.scene, true, false);
         scene.add(env_objects);
     });
+
+    // Render and animate animated environment
+    let mixer;
+    const updateMixer = (delta) => {
+        if(mixer) mixer.update(delta);
+    }
+
+    loader.load(`./assets/${ENVIRONMENT_ANIMATED_ASSET}`, function(gltf) {
+        const env_animated = gltf.scene;
+        env_animated.position.set(...position);
+        setShadow(gltf.scene, true, false);
+
+        // Setup animation mixer and play all animations 
+        mixer = new THREE.AnimationMixer(env_animated);
+        const clips = gltf.animations;
+
+        clips.forEach(function (clip) {
+            mixer.clipAction(clip).play();
+        });
+
+        scene.add(env_animated);
+    });
+
+    return updateMixer;
 }
 
 // Creates and animates clouds ☁

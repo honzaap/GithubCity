@@ -32,14 +32,16 @@ const tileTypes = getTileTypes();
 for(let i = 0; i < tileTypes.length; i++){
 	for(let j = 0; j < tileTypes[0].length; j++){
 		let tileType = tileTypes[i][j];
+		let x = 2 * (j + renderShiftX) * 1.1;
+		let z = 2 * (i + renderShiftY) * 1.1;
 		if(tileType.tile === 0){ // Render grass tiles
-			renderGrass(2 * (j + renderShiftX), 0, 2 * (i + renderShiftY), scene);
+			renderGrass(x, 0, z, scene);
 		}
 		else if(tileType.tile === 1){ // Render road tiles
-			renderRoad(2 * (j + renderShiftX), -.015, 2 * (i + renderShiftY), tileTypes[i][j], scene);
+			renderRoad(x, -.015, z, tileTypes[i][j], scene);
 		}
 		else if(tileType.tile === 2){ // Render building tiles
-			renderBuilding(2 * (j + renderShiftX), 2 * renderShiftZ, 2 * (i + renderShiftY), tileTypes[i][j], scene); 
+			renderBuilding(x, 2 * renderShiftZ, z, tileTypes[i][j], scene); 
 		}
 	}
 }
