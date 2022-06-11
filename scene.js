@@ -6,7 +6,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { EffectComposer,RenderPass } from "postprocessing";
-import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET, CLOUD_ASSET, ENVIRONMENT_OBJECTS_ASSET, TREES_SMALL, ENVIRONMENT_ANIMATED_ASSET } from "./constants";
+import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET, CLOUD_ASSET, BIRD_ASSET, ENVIRONMENT_OBJECTS_ASSET, TREES_SMALL, ENVIRONMENT_ANIMATED_ASSET } from "./constants";
 
 // Global GLTF loader
 const loader = new GLTFLoader();
@@ -24,6 +24,8 @@ export function createScene() {
     const controls = createControls(camera, renderer);
 
     const updateClouds = createClouds(scene);
+
+    const updateBirds = createBirds(scene);
     
     const composer = setupPostProcessing(scene, camera, renderer);
     
@@ -37,6 +39,7 @@ export function createScene() {
         controls.update();
         updateMixer(delta);
         updateClouds();
+        updateBirds();
         composer.render();
     }
     animate();
@@ -190,15 +193,15 @@ function setupPostProcessing(scene, camera, renderer) {
 // Create and configure lighting in the scene  
 function setupLighting(scene) {
     // Ambient lighting 
-    const ambientLight = new THREE.AmbientLight(0x9AD0EC, 0.3);
+    const ambientLight = new THREE.AmbientLight(0x9AD0EC, 0.7);
     scene.add(ambientLight);
 
     // Directional lighting and shadows
-    const directionLight = new THREE.DirectionalLight(0xFFE0AC);
+    const directionLight = new THREE.DirectionalLight(0xE9B37C);
     directionLight.position.set(-50, 50, -20);
     directionLight.castShadow = true;
-    directionLight.shadow.mapSize.x = 512; // Todo: set to choosable preset
-    directionLight.shadow.mapSize.y = 512; // Todo: set to choosable preset
+    directionLight.shadow.mapSize.x = 2048; // Todo: set to choosable preset
+    directionLight.shadow.mapSize.y = 2048; // Todo: set to choosable preset
     directionLight.shadow.camera.near = 15;
     directionLight.shadow.camera.far = 150.0;
     directionLight.shadow.camera.right =  75;
@@ -268,8 +271,8 @@ function createClouds(scene) {
             let y = 15 + 8 * Math.random();
             cloud.position.set(x, y, z);
             cloud.rotation.y = Math.random() * 30;
-            gltf.scene.children[0].material.opacity = 0.8;
-            gltf.scene.children[0].material.transparent = true;
+            cloud.children[0].material.opacity = 0.8;
+            cloud.children[0].material.transparent = true;
 
             setShadow(cloud, false, false);
             cloud.resetPosition = () => {
@@ -303,4 +306,53 @@ function createClouds(scene) {
         } 
     }
     return updateClouds;
+}
+
+// Create birds and return update function
+function createBirds(scene) {
+    let birds = [];
+    const BIRD_COUNT = 5;
+    for(let i = 0; i < BIRD_COUNT; i++) {
+        loader.load(`./assets/${BIRD_ASSET}`, function(gltf) {
+            let bird = gltf.scene;
+            let x = -60 + 30 * Math.random();
+            let z = -40 + 3 * i;
+            let y = 15 + 8 * Math.random();
+            bird.position.set(x, y, z);
+            bird.rotation.y = THREE.Math.degToRad(90);
+            bird.children[0].material.opacity = 1;
+            bird.children[0].material.transparent = true;
+
+            setShadow(bird, false, false);
+            bird.resetPosition = () => {
+                bird.position.set(-65, y, z);
+            }
+
+            birds.push(bird);
+            scene.add(bird);
+        });
+    }
+    const updateBirds = () => {
+        for(let bird of birds){
+            bird.position.x += 0.04;
+            if(bird.fadingIn){
+                bird.children[0].material.opacity += 0.01;
+                if(bird.children[0].material.opacity >= 1){
+                    bird.fadingIn = false;
+                }
+            }
+            if(bird.fadingOut){
+                bird.children[0].material.opacity -= 0.01;
+                if(bird.children[0].material.opacity <= 0){
+                    bird.fadingOut = false;
+                    bird.fadingIn = true;
+                    bird.resetPosition();
+                }
+            }
+            if(bird.position.x >= 65){
+                bird.fadingOut = true;
+            }
+        } 
+    }
+    return updateBirds;
 }
