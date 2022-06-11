@@ -13,6 +13,7 @@
     "vite": "^2.9.7"
   },
   "dependencies": {
-    "three": "^0.140.0"
+    "postprocessing": "^6.27.0",
+    "three": "^0.140.2"
   }
 }

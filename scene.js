@@ -5,8 +5,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
+import { EffectComposer,RenderPass } from "postprocessing";
 import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET, CLOUD_ASSET, ENVIRONMENT_OBJECTS_ASSET, TREES_SMALL, ENVIRONMENT_ANIMATED_ASSET } from "./constants";
 
 // Global GLTF loader
@@ -149,7 +148,9 @@ function createCamera() {
 // Create and configure renderer and return it 
 function createRenderer(scene, camera) {
     const renderer = new THREE.WebGLRenderer({
+        powerPreference: "high-performance",
         antialias: true,
+        depth: false,
         canvas: document.querySelector("#bg")
     });
 
@@ -189,27 +190,27 @@ function setupPostProcessing(scene, camera, renderer) {
 // Create and configure lighting in the scene  
 function setupLighting(scene) {
     // Ambient lighting 
-    const ambientLight = new THREE.AmbientLight(0x202020);
+    const ambientLight = new THREE.AmbientLight(0x9AD0EC, 0.3);
     scene.add(ambientLight);
 
     // Directional lighting and shadows
-    const directionLight = new THREE.DirectionalLight(0xf5f5f5);
+    const directionLight = new THREE.DirectionalLight(0xFFE0AC);
     directionLight.position.set(-50, 50, -20);
     directionLight.castShadow = true;
-    directionLight.shadow.mapSize.x = 512; // Tweak for best quality/performace settings
-    directionLight.shadow.mapSize.y = 512; // Tweak for best quality/performace settings
-    directionLight.shadow.camera.near = 0.1;
-    directionLight.shadow.camera.far = 400.0;
-    directionLight.shadow.camera.right =  72;
-    directionLight.shadow.camera.left = -72;
-    directionLight.shadow.camera.top =  72;
-    directionLight.shadow.camera.bottom = -72;
+    directionLight.shadow.mapSize.x = 512; // Todo: set to choosable preset
+    directionLight.shadow.mapSize.y = 512; // Todo: set to choosable preset
+    directionLight.shadow.camera.near = 15;
+    directionLight.shadow.camera.far = 150.0;
+    directionLight.shadow.camera.right =  75;
+    directionLight.shadow.camera.left = -75;
+    directionLight.shadow.camera.top =  75;
+    directionLight.shadow.camera.bottom = -75;
     scene.add(directionLight);
 }
 
 // Create and setup anything environment-related 
 function setupEnvironment(scene) {
-    const sceneBackground = new THREE.Color(0xA7C5EB);
+    const sceneBackground = new THREE.Color(0x9AD0EC);
     scene.background = sceneBackground;
 
     const position = new THREE.Vector3(0, -4, 0);
