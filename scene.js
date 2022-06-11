@@ -200,10 +200,10 @@ function setupLighting(scene) {
     directionLight.shadow.mapSize.y = 512; // Tweak for best quality/performace settings
     directionLight.shadow.camera.near = 0.1;
     directionLight.shadow.camera.far = 400.0;
-    directionLight.shadow.camera.right =  50;
-    directionLight.shadow.camera.left = -50;
-    directionLight.shadow.camera.top =  50;
-    directionLight.shadow.camera.bottom = -50;
+    directionLight.shadow.camera.right =  72;
+    directionLight.shadow.camera.left = -72;
+    directionLight.shadow.camera.top =  72;
+    directionLight.shadow.camera.bottom = -72;
     scene.add(directionLight);
 }
 
