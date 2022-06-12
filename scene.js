@@ -6,7 +6,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { EffectComposer,RenderPass } from "postprocessing";
-import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET, CLOUD_ASSET, BIRD_ASSET, ENVIRONMENT_OBJECTS_ASSET, TREES_SMALL, ENVIRONMENT_ANIMATED_ASSET } from "./constants";
+import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET, ENVIRONMENT_OBJECTS_ASSET, TREES_SMALL, ENVIRONMENT_ANIMATED_ASSET } from "./constants";
 
 // Global GLTF loader
 const loader = new GLTFLoader();
@@ -23,10 +23,6 @@ export function createScene() {
 
     const controls = createControls(camera, renderer);
 
-    const updateClouds = createClouds(scene);
-
-    const updateBirds = createBirds(scene);
-    
     const composer = setupPostProcessing(scene, camera, renderer);
     
     const clock = new THREE.Clock();
@@ -38,8 +34,6 @@ export function createScene() {
         requestAnimationFrame(animate);
         controls.update();
         updateMixer(delta);
-        updateClouds();
-        updateBirds();
         composer.render();
     }
     animate();
@@ -192,8 +186,9 @@ function setupPostProcessing(scene, camera, renderer) {
 
 // Create and configure lighting in the scene  
 function setupLighting(scene) {
-    // Ambient lighting 
-    const ambientLight = new THREE.AmbientLight(0x9AD0EC, 0.7);
+    // Ambient lighting
+    //const ambientLight = new THREE.AmbientLight(0x9AD0EC, 0.7);      // For combination with directional light
+    const ambientLight = new THREE.AmbientLight(0x9AD0EC, 1.3);
     scene.add(ambientLight);
 
     // Directional lighting and shadows
@@ -208,7 +203,7 @@ function setupLighting(scene) {
     directionLight.shadow.camera.left = -75;
     directionLight.shadow.camera.top =  75;
     directionLight.shadow.camera.bottom = -75;
-    scene.add(directionLight);
+    //scene.add(directionLight);                                        // For shadows
 }
 
 // Create and setup anything environment-related 
@@ -257,102 +252,4 @@ function setupEnvironment(scene) {
     });
 
     return updateMixer;
-}
-
-// Creates and animates clouds ☁
-function createClouds(scene) {
-    let clouds = [];
-    const CLOUD_COUNT = 4;
-    for(let i = 0; i < CLOUD_COUNT; i++) {
-        loader.load(`./assets/${CLOUD_ASSET}`, function(gltf) {
-            let cloud = gltf.scene;
-            let x = -40 * (Math.random() * 0.3 + 0.8) + (i * (Math.random() * 0.3 + 0.7) * 30)
-            let z = -60 + 120 * Math.random();
-            let y = 15 + 8 * Math.random();
-            cloud.position.set(x, y, z);
-            cloud.rotation.y = Math.random() * 30;
-            cloud.children[0].material.opacity = 0.8;
-            cloud.children[0].material.transparent = true;
-
-            setShadow(cloud, false, false);
-            cloud.resetPosition = () => {
-                cloud.position.set(x, y, 70);
-            }
-
-            clouds.push(cloud);
-            scene.add(cloud);
-        });
-    }
-    const updateClouds = () => {
-        for(let cloud of clouds){
-            cloud.position.z -= 0.01;
-            if(cloud.fadingIn){
-                cloud.children[0].material.opacity += 0.01;
-                if(cloud.children[0].material.opacity >= 0.8){
-                    cloud.fadingIn = false;
-                }
-            }
-            if(cloud.fadingOut){
-                cloud.children[0].material.opacity -= 0.01;
-                if(cloud.children[0].material.opacity <= 0){
-                    cloud.fadingOut = false;
-                    cloud.fadingIn = true;
-                    cloud.resetPosition();
-                }
-            }
-            if(cloud.position.z <= -65){
-                cloud.fadingOut = true;
-            }
-        } 
-    }
-    return updateClouds;
-}
-
-// Create birds and return update function
-function createBirds(scene) {
-    let birds = [];
-    const BIRD_COUNT = 5;
-    for(let i = 0; i < BIRD_COUNT; i++) {
-        loader.load(`./assets/${BIRD_ASSET}`, function(gltf) {
-            let bird = gltf.scene;
-            let x = -60 + 30 * Math.random();
-            let z = -40 + 3 * i;
-            let y = 15 + 8 * Math.random();
-            bird.position.set(x, y, z);
-            bird.rotation.y = THREE.Math.degToRad(90);
-            bird.children[0].material.opacity = 1;
-            bird.children[0].material.transparent = true;
-
-            setShadow(bird, false, false);
-            bird.resetPosition = () => {
-                bird.position.set(-65, y, z);
-            }
-
-            birds.push(bird);
-            scene.add(bird);
-        });
-    }
-    const updateBirds = () => {
-        for(let bird of birds){
-            bird.position.x += 0.04;
-            if(bird.fadingIn){
-                bird.children[0].material.opacity += 0.01;
-                if(bird.children[0].material.opacity >= 1){
-                    bird.fadingIn = false;
-                }
-            }
-            if(bird.fadingOut){
-                bird.children[0].material.opacity -= 0.01;
-                if(bird.children[0].material.opacity <= 0){
-                    bird.fadingOut = false;
-                    bird.fadingIn = true;
-                    bird.resetPosition();
-                }
-            }
-            if(bird.position.x >= 65){
-                bird.fadingOut = true;
-            }
-        } 
-    }
-    return updateBirds;
 }
