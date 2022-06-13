@@ -1,12 +1,85 @@
-*{
+* {
 	padding: 0;
 	margin: 0;
+	font-family: 'Inter';
 }
-body{
+
+:root {
+	--yellow: #E1BA30;
+	--green: #30E1B7;
+}
+
+.btn-ghc {
+	font-size: inherit;
+	background: linear-gradient(103.98deg, var(--green) 6.28%, var(--yellow) 100%);
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 50%;
+	outline: none;
+	border: 0;
+	padding: 20px;
+	color: #fff;
+	cursor: pointer;
+	filter: brightness(1.1);
+	transition: filter 250ms ease;
+}
+
+.btn-ghc:hover {
+	filter: none;
+}	
+
+a {
+	text-decoration: none;
+}
+
+body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
 }
-canvas{
+
+.canvas-ui {
+	position: fixed;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
+.canvas-ui .buttons-options {
+	position: absolute;
+	right: 0;
+	top: 60%;
+	bottom: 20%;
+	padding-right: 1.5rem;
+}
+
+.canvas-ui button, .canvas-ui a {
+	pointer-events: all;
+}
+
+nav {
+	display: flex;
+	align-items: center;
+	padding: 1rem 1.5rem;
+}
+
+.nav-title {
+	color: #fff;
+	font-size: 1.75rem;
+	text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.75);
+}
+
+footer {
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	padding: 1rem 2.5rem;
+}
+
+.footer-link {
+	color: #fff;
+	text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.75);
 }

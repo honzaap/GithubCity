@@ -38,6 +38,13 @@ export function createScene() {
     }
     animate();
 
+    // Resize renderer when window size changes 
+    window.onresize = () => {
+        resizeRenderer(renderer);
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+    }
+
     return scene;
 }
 
@@ -151,8 +158,7 @@ function createRenderer(scene, camera) {
         canvas: document.querySelector("#bg")
     });
 
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    resizeRenderer(renderer);
 
     renderer.render(scene, camera);
     renderer.outputEncoding = THREE.sRGBEncoding;
@@ -160,6 +166,12 @@ function createRenderer(scene, camera) {
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     return renderer;
+}
+
+// Set's the renderers size to current window size
+function resizeRenderer(renderer) {
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 // Create and configure controls and return it 
