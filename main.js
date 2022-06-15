@@ -2,8 +2,11 @@ import { createScene, renderBuilding, renderRoad, renderGrass } from "./scene";
 import { initializeTiles, findTiles, getTileTypes } from "./algo";
 import { fetchContributions, getConvertedContributions } from "./api";
 
+// Get HTML elements
+let autoRotateButton = document.getElementById("autorotate");
+
 // Create 3D environment
-const scene = createScene();
+const { scene, controls } = createScene();
 const renderShiftX = -26; 
 const renderShiftY = -4;
 const renderShiftZ = 0.38;
@@ -44,4 +47,12 @@ for(let i = 0; i < tileTypes.length; i++){
 			renderBuilding(x, 2 * renderShiftZ, z, tileTypes[i][j], scene); 
 		}
 	}
+}
+
+// Input events
+autoRotateButton.onclick = (e) => {
+	e.preventDefault();
+	controls.autoRotate = !controls.autoRotate;
+	if(controls.autoRotate) autoRotateButton.classList.remove("inactive");
+	else autoRotateButton.classList.add("inactive");
 }

@@ -10,6 +10,7 @@
     "start": "open http://localhost:3000 && node main.js"
   },
   "devDependencies": {
+    "sass": "^1.52.3",
     "vite": "^2.9.7"
   },
   "dependencies": {

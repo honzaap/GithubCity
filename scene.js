@@ -45,7 +45,7 @@ export function createScene() {
         camera.updateProjectionMatrix();
     }
 
-    return scene;
+    return { scene, controls };
 }
 
 // Set shadows on given object to given settings
@@ -200,15 +200,15 @@ function setupPostProcessing(scene, camera, renderer) {
 function setupLighting(scene) {
     // Ambient lighting
     //const ambientLight = new THREE.AmbientLight(0x9AD0EC, 0.7);      // For combination with directional light
-    const ambientLight = new THREE.AmbientLight(0x9AD0EC, 1.3);
+    const ambientLight = new THREE.AmbientLight(0x9AD0EC, 1);
     scene.add(ambientLight);
 
     // Directional lighting and shadows
     const directionLight = new THREE.DirectionalLight(0xE9B37C);
     directionLight.position.set(-50, 50, -20);
     directionLight.castShadow = true;
-    directionLight.shadow.mapSize.x = 2048; // Todo: set to choosable preset
-    directionLight.shadow.mapSize.y = 2048; // Todo: set to choosable preset
+    directionLight.shadow.mapSize.x = 2048; 
+    directionLight.shadow.mapSize.y = 2048; 
     directionLight.shadow.camera.near = 15;
     directionLight.shadow.camera.far = 150.0;
     directionLight.shadow.camera.right =  75;
