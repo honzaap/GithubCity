@@ -3,7 +3,6 @@
  */
 
 import { AWS_API_URL } from "./constants";
-
 // Fetches data from GitHub's GraphQL API via custom AWS function
 export async function fetchContributions(username, year) {
     try{

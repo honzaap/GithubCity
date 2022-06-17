@@ -48,6 +48,13 @@ export function createScene() {
     return { scene, controls };
 }
 
+export function clearScene(scene){
+    let toDelete = ["Building", "Road", "Grass", "Tree"];
+    for(let i = scene.children.length - 1; i >= 0; i--){
+        if(toDelete.includes(scene.children[i].name)) scene.remove(scene.children[i]);
+    }
+}
+
 // Set shadows on given object to given settings
 function setShadow(obj, cast = false, receive = false){
     obj.castShadow = cast;
@@ -77,6 +84,7 @@ export function renderBuilding(x, y, z, building, scene){
             gltf.scene.position.y = y + i * FLOOR_HEIGHT * 2;
             gltf.scene.position.x = x + extraShift;
             gltf.scene.position.z = z + extraShift;
+            gltf.scene.name = "Building";
             if(building.mirror){
                 gltf.scene.scale.z *= -1; // mirror the object
                 extraAngle = 270; // add extra angle to compensate shift from mirroring
@@ -106,6 +114,7 @@ export function renderRoad(x, y, z, road, scene){
 
         setShadow(gltf.scene, false, true);
 
+        gltf.scene.name = "Road";
         scene.add(gltf.scene);
     }, undefined, function (error) {
         console.error(error);
@@ -122,6 +131,7 @@ export function renderGrass(x, y, z, scene){
 
         setShadow(gltf.scene, false, true);
 
+        gltf.scene.name = "Grass";
         scene.add(gltf.scene);
     }, undefined, function (error) {
         console.error(error);
@@ -136,6 +146,7 @@ export function renderGrass(x, y, z, scene){
     
             setShadow(gltf.scene, true, false);
     
+            gltf.scene.name = "Tree";
             scene.add(gltf.scene);
         })
     }
@@ -177,8 +188,8 @@ function resizeRenderer(renderer) {
 // Create and configure controls and return it 
 function createControls(camera, renderer) {
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.autoRotate = false; // Todo: Bind to a toggle button
-    controls.autoRotateSpeed = -2;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = -1;
     controls.enableDamping = true;
     controls.dampingFactor = 0.1;
     controls.enablePan = true;

@@ -7,14 +7,16 @@ import { BUILDING_TYPES } from "./constants";
 let rowLength = -1;
 let colLength = -1;
 
-const tileTypes = [];
-const seenTiles = [];
+let tileTypes = [];
+let seenTiles = [];
 
 let contribs = [];
 
 // Look through contributions and assign tileType and seenTile to all positions
-export function initializeTiles(initContribs) {
-	contribs = initContribs;
+export function initializeTiles(newContribs) {
+	contribs = newContribs;
+	tileTypes = [];
+	seenTiles = [];
 	colLength = contribs.length;
 	rowLength = contribs[0].length;
     for(let i = 0; i < contribs.length; i++){

@@ -58,6 +58,7 @@ small {
 
 a {
 	text-decoration: none;
+	cursor: pointer;
 }
 
 .canvas-ui {
@@ -72,6 +73,7 @@ a {
 		top: 60%;
 		bottom: 20%;
 		padding-right: 1.5rem;
+		transition: opacity 400ms ease;
 	}
 	
 	& button, & a {
@@ -114,13 +116,14 @@ footer {
 
 .selection-screen {
 	position: absolute;
-	background-color: rgba(0, 0, 0, 0.2);
+	background-color: rgba(0, 0, 0, 0.3);
 	inset: 0;
 	font-size: 20px;
 	text-align: center;
 	padding-top: 10%;
 	pointer-events: all;
 	z-index: 1;
+	transition: padding-top 700ms ease, top 700ms ease, opacity 400ms ease;
 	h3{
 		font-weight: normal;
 		color: #fff;
@@ -128,6 +131,37 @@ footer {
 		text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.75);
 		font-size: 1.75rem;
 	}
+
+	&.hidden{
+		padding-top: 0;
+		top: -160px;
+		background-color: transparent;
+		pointer-events: none;
+		opacity: 0;
+		+ * + .display-info{
+			transform: none;
+		}
+	}
+
+	&:not(.hidden) + .buttons-options{
+		opacity: 0;
+	}
+
+}
+
+.display-info{
+	position: absolute;
+	top: 10px;
+	color: #fff;
+	text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.75);
+	font-size: 28px;
+	text-align: center;
+	transform: translateY(-150%);
+	transition: transform 1000ms ease;
+	display: flex;
+	gap: 30px;
+	justify-content: center;
+	width: 100%;
 }
 
 .input-form {
@@ -150,7 +184,7 @@ footer {
 	input {
 		margin-right: 1rem;
 		&::placeholder {
-			color: inherit;
+			color: rgba(255, 255, 255, 0.6)
 		}
 	}
 

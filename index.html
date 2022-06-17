@@ -29,29 +29,30 @@
 	<div class="canvas-ui">
 		<header>
 			<nav>
-				<a href="#" id="title" class="nav-title">GitHub City</a>
+				<a id="title" class="nav-title">GitHub City</a>
 			</nav>
 		</header>
 
-		<div class="buttons-options">
-			<button class="btn-ghc inactive" id="autorotate" title="Toggle auto-rotate"><i class="fa-solid fa-rotate"></i></button>
-		</div>
-
 		<!-- Selection screen -->
-		<div class="selection-screen">
+		<div class="selection-screen" id="selectionScreen">
 			<h1>What would <strong>Your</strong> city look like?</h1>
 			<h3>Create a 3D city from your GitHub contributions.</h3>
-			<form class="input-form">
-				<select name="" id="">
-					<option value="2021">2021</option>
-					<option value="2020">2020</option>
-					<option value="2019">2019</option>
-					<option value="2018">2018</option>
-				</select>
-				<input type="text" placeholder="GitHub Username">
+			<form class="input-form" id="infoForm">
+				<select name="year_select" id="yearSelect" required></select>
+				<input id="usernameInput" type="text" required placeholder="GitHub Username">
 				<button class="btn-ghc" type="submit">Create!</button>
 			</form>
 			<p class="disclaimer"><small>It is highly recommended to have hardware acceleration on</small></p>
+		</div>
+
+		<!-- Side options -->
+		<div class="buttons-options">
+			<button class="btn-ghc" id="autorotate" title="Toggle auto-rotate"><i class="fa-solid fa-rotate"></i></button>
+		</div>
+
+		<!-- Upper name and year display -->
+		<div id="displayInfo" class="display-info">
+
 		</div>
 
 		<footer>
