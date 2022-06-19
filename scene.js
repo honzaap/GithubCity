@@ -67,10 +67,11 @@ function setShadow(obj, cast = false, receive = false){
 }
 
 export function renderBuilding(x, y, z, building, scene){
-	for(let i = 0; i < building.value; i++){
+    let height = Math.min(building.value, 50);
+	for(let i = 0; i < height; i++){
 		let assetToLoad = "";
 		if(i === 0) assetToLoad = building.building.groundUrl; // Load ground tile
-		else if(i === building.value-1) assetToLoad = building.building.roofUrl; // Load roof tile
+		else if(i === height-1) assetToLoad = building.building.roofUrl; // Load roof tile
 		else assetToLoad = building.building.floorUrl; // Load floor tile
         if(assetToLoad == null || assetToLoad == "") return;
 

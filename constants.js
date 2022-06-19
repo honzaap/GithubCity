@@ -9,7 +9,7 @@ export const BUILDING_TYPES = {
             floorUrl: "building_1x1_0_f.glb",
             roofUrl: "building_1x1_0_r.glb",
             min: 4,
-            max: 15
+            max: 999
         },
         {
             groundUrl: "building_1x1_1_g.glb",
@@ -109,7 +109,7 @@ export const BUILDING_TYPES = {
             floorUrl: "building_1x2_2_f.glb",
             roofUrl: "building_1x2_2_r.glb",
             min: 2,
-            max: 8  
+            max: 6  
         },
         {
             groundUrl: "building_1x2_3_g.glb",
@@ -122,14 +122,14 @@ export const BUILDING_TYPES = {
             floorUrl: "building_1x2_4_f.glb",
             roofUrl: "building_1x2_4_r.glb",
             min: 4,
-            max: 15  
+            max: 999  
         },
         {
             groundUrl: "building_1x2_5_g.glb",
             floorUrl: "building_1x2_5_f.glb",
             roofUrl: "building_1x2_5_r.glb",
             min: 5,
-            max: 15  
+            max: 8  
         },
         {
             groundUrl: "building_1x2_6_g.glb",
@@ -143,12 +143,19 @@ export const BUILDING_TYPES = {
             floorUrl: "building_1x2_7_f.glb",
             roofUrl: "building_1x2_7_r.glb",
             min: 4,
-            max: 999  
+            max: 8  
         },
         {
             groundUrl: "building_1x2_8_g.glb",
             floorUrl: "building_1x2_8_f.glb",
             roofUrl: "building_1x2_8_r.glb",
+            min: 5,
+            max: 999  
+        },
+        {
+            groundUrl: "building_1x2_9_g.glb",
+            floorUrl: "building_1x2_9_f.glb",
+            roofUrl: "building_1x2_9_r.glb",
             min: 5,
             max: 999  
         }
