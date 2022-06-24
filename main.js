@@ -12,6 +12,15 @@ const selectionScreen = document.getElementById("selectionScreen");
 const titleLink = document.getElementById("title");
 const displayInfo = document.getElementById("displayInfo");
 
+// Populate year select with years down to 2008
+const currentYear = new Date().getFullYear();
+for(let y = currentYear; y >= 2008; y--){
+	let option = document.createElement("option");
+	option.value = y;
+	option.innerHTML = y;
+	yearSelect.appendChild(option);
+}
+
 // Create 3D environment
 const { scene, controls } = createScene();
 const renderShiftX = -26; 
@@ -20,7 +29,20 @@ const renderShiftZ = 0.38;
 
 let enteredInfo = false;
 
-generateCity(INIT_CONTRIBUTIONS);
+const urlParams = new URLSearchParams(window.location.search);
+if(urlParams.get("name") && urlParams.get("year")) {
+	// Generate city with url params
+	enteredInfo = true;
+	selectionScreen.classList.add("hidden");
+	let name = urlParams.get("name");
+	let year = urlParams.get("year");
+	await generateCityFromParams(name, year);
+}
+else{
+	// Placeholder city
+	generateCity(INIT_CONTRIBUTIONS);
+}
+
 
 /* - - Input events - - */
 // Set autorotations
@@ -37,16 +59,12 @@ infoForm.onsubmit = async (e) => {
 	selectionScreen.classList.add("hidden");
 	let name = usernameInput.value;
 	let year = yearSelect.value;
-	displayInfo.innerHTML = `<span>${name}</span> <span>${year}</span>`;
 	enteredInfo = true;
-	// 1. Get data from API
-	let apiContribs = await fetchContributions(name, year);
-	if(apiContribs == null) {
-		// Todo: show error message
-		throw new Error("Data bad :(");
-	}
-	let contribs = getConvertedContributions(apiContribs);
-	generateCity(contribs);
+	let tempArray = window.location.href.split("?");
+    let baseURL = tempArray[0];
+	let newUrl = `${baseURL}?name=${name}&year=${year}`;
+	window.history.replaceState('', '', newUrl);
+	await generateCityFromParams(name, year);
 }
 
 // Open UI back, start autorotation
@@ -62,6 +80,24 @@ titleLink.onclick = (e) => {
 
 	if(controls.autoRotate) autoRotateButton.classList.remove("inactive");
 	else autoRotateButton.classList.add("inactive");
+}
+
+
+async function generateCityFromParams(name, year) {
+	displayInfo.innerHTML = `<span>${name}</span> <span>${year}</span>`;
+
+	// Get data from API
+	let apiContribs = await fetchContributions(name, year);
+	if(apiContribs == null) {
+		// Todo: show error message
+		throw new Error("Data bad :(");
+	}
+
+	// Convert data to 2D array
+	let contribs = getConvertedContributions(apiContribs);
+
+	// Render data 
+	generateCity(contribs);
 }
 
 // Get the 2D array containing contributions and make stuff happen
@@ -91,13 +127,4 @@ function generateCity(contribs) {
 			}
 		}
 	}
-}
-
-// Populate year select with years down to 2008
-const currentYear = new Date().getFullYear();
-for(let y = currentYear; y >= 2008; y--){
-	let option = document.createElement("option");
-	option.value = y;
-	option.innerHTML = y;
-	yearSelect.appendChild(option);
 }

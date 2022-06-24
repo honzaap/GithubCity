@@ -160,10 +160,13 @@ function findBuilding(x, y, val) {
 		res.dir = Math.floor(Math.random()*4);
 	}
 
-	if(res.type !== -1){ // pick a building model on random depending on type
+ 	// Pick a building model
+	if(res.type !== -1){
 		let types = BUILDING_TYPES[res.type];
 		types = types.filter(t => val >= t.min && val <= t.max);
-		res.building = types[Math.floor(Math.random() * types.length)];
+		// let idx = Math.floor(Math.random() * types.length) // Select a random building model
+		let idx = (x * y * val) % types.length; // Select a model based on location and height
+		res.building = types[idx];
 	}
 
 	return res;

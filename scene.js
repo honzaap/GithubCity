@@ -67,7 +67,7 @@ function setShadow(obj, cast = false, receive = false){
 }
 
 export function renderBuilding(x, y, z, building, scene){
-    let height = Math.min(building.value, 50);
+    let height = Math.min(building.value, 35); // Cap height
 	for(let i = 0; i < height; i++){
 		let assetToLoad = "";
 		if(i === 0) assetToLoad = building.building.groundUrl; // Load ground tile
@@ -211,8 +211,8 @@ function setupPostProcessing(scene, camera, renderer) {
 // Create and configure lighting in the scene  
 function setupLighting(scene) {
     // Ambient lighting
-    //const ambientLight = new THREE.AmbientLight(0x9AD0EC, 0.7);      // For combination with directional light
-    const ambientLight = new THREE.AmbientLight(0x9AD0EC, 1);
+    const ambientLight = new THREE.AmbientLight(0x9AD0EC, 0.7); 
+    //const ambientLight = new THREE.AmbientLight(0x9AD0EC, 1);
     scene.add(ambientLight);
 
     // Directional lighting and shadows
@@ -227,7 +227,7 @@ function setupLighting(scene) {
     directionLight.shadow.camera.left = -75;
     directionLight.shadow.camera.top =  75;
     directionLight.shadow.camera.bottom = -75;
-    //scene.add(directionLight);                                        // For shadows
+    scene.add(directionLight);                                       
 }
 
 // Create and setup anything environment-related 
