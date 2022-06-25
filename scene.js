@@ -77,19 +77,26 @@ export function renderBuilding(x, y, z, building, scene){
 
 		loader.load(`./assets/${assetToLoad}`, function (gltf) {
             let isLShaped = building.type === 2;
-            let extraShift = isLShaped ? 2 * (building.dir % 2) : 0;
+            let extraShiftZ = 0;
+            let extraShiftX = 0;
+            if(isLShaped && building.dir === 1){
+                extraShiftZ = 2;
+                extraShiftX = 2;
+            }
             let extraAngle = 0;
 
             setShadow(gltf.scene, true, false);
 
-            gltf.scene.position.y = y + i * FLOOR_HEIGHT * 2;
-            gltf.scene.position.x = x + extraShift;
-            gltf.scene.position.z = z + extraShift;
             gltf.scene.name = "Building";
             if(building.mirror){
                 gltf.scene.scale.z *= -1; // mirror the object
                 extraAngle = 270; // add extra angle to compensate shift from mirroring
             }
+
+            gltf.scene.position.y = y + i * FLOOR_HEIGHT * 2;
+            gltf.scene.position.x = x + extraShiftX;
+            gltf.scene.position.z = z + extraShiftZ;
+
             gltf.scene.rotation.y = THREE.Math.degToRad(-90 * (building.dir + (isLShaped ? 2 : 0)) - extraAngle);
 
 			scene.add(gltf.scene);

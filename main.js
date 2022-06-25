@@ -36,7 +36,7 @@ if(urlParams.get("name") && urlParams.get("year")) {
 	selectionScreen.classList.add("hidden");
 	let name = urlParams.get("name");
 	let year = urlParams.get("year");
-	await generateCityFromParams(name, year);
+	generateCityFromParams(name, year);
 }
 else{
 	// Placeholder city
