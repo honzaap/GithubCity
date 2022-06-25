@@ -200,7 +200,7 @@ function createControls(camera, renderer) {
     controls.autoRotateSpeed = -1;
     controls.enableDamping = true;
     controls.dampingFactor = 0.1;
-    controls.enablePan = true;
+    controls.enablePan = false;
     controls.minDistance = 30;
     controls.maxDistance = 150;
 

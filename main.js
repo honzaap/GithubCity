@@ -11,6 +11,7 @@ const infoForm = document.getElementById("infoForm");
 const selectionScreen = document.getElementById("selectionScreen");
 const titleLink = document.getElementById("title");
 const displayInfo = document.getElementById("displayInfo");
+const errorMessage = document.getElementById("errorMessage");
 
 // Populate year select with years down to 2008
 const currentYear = new Date().getFullYear();
@@ -33,7 +34,6 @@ const urlParams = new URLSearchParams(window.location.search);
 if(urlParams.get("name") && urlParams.get("year")) {
 	// Generate city with url params
 	enteredInfo = true;
-	selectionScreen.classList.add("hidden");
 	let name = urlParams.get("name");
 	let year = urlParams.get("year");
 	generateCityFromParams(name, year);
@@ -56,7 +56,6 @@ autoRotateButton.onclick = (e) => {
 // Submit form, get data and generate city
 infoForm.onsubmit = async (e) => {
 	e.preventDefault();
-	selectionScreen.classList.add("hidden");
 	let name = usernameInput.value;
 	let year = yearSelect.value;
 	enteredInfo = true;
@@ -76,6 +75,7 @@ titleLink.onclick = (e) => {
 	else{
 		selectionScreen.classList.remove("hidden");
 		controls.autoRotate = true;
+		errorMessage.style.display = "none";
 	}
 
 	if(controls.autoRotate) autoRotateButton.classList.remove("inactive");
@@ -84,17 +84,18 @@ titleLink.onclick = (e) => {
 
 
 async function generateCityFromParams(name, year) {
-	displayInfo.innerHTML = `<span>${name}</span> <span>${year}</span>`;
-
 	// Get data from API
 	let apiContribs = await fetchContributions(name, year);
 	if(apiContribs == null) {
-		// Todo: show error message
-		throw new Error("Data bad :(");
+		errorMessage.style.display = "block";
+		return;
 	}
 
 	// Convert data to 2D array
 	let contribs = getConvertedContributions(apiContribs);
+
+	selectionScreen.classList.add("hidden");
+	displayInfo.innerHTML = `<span>${name}</span> <span>${year}</span>`;
 
 	// Render data 
 	generateCity(contribs);

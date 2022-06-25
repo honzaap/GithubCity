@@ -31,6 +31,12 @@ small {
 	font-size: 14px;
 }
 
+.error{
+	display: none;
+	margin-top: 5px;
+	color: rgb(237, 44, 37);
+}
+
 .btn-ghc {
 	font-size: inherit;
 	background: linear-gradient(103.98deg, var(--green) 6.28%, var(--yellow) 100%);

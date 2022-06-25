@@ -6,8 +6,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="icon" type="image/svg+xml" href="./assets/favicon.4e54c816.svg" />
 	<title>GitHub City</title>
-	<base href="./">
-
+	<meta name="description" content="GitHub City - Generate a 3D city with your GitHub contributions graph.">
+	<meta name="keywords" content="github, city, webgl, 3D, contributions">
+	<base href="/">
+	
 	<!-- Styles -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.5/css/selectize.min.css" integrity="sha512-zSutnLmqtlWVx0A5NdW8YwshpUETPzJ6YBAvb+bkE0QbVKopS0ACPjE6QY6F9aFPSowfiho+hgeQh095FRPj5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />	
 	
@@ -23,8 +25,8 @@
 
 	<!-- Font awesome -->
 	<script src="https://kit.fontawesome.com/54904af69a.js" crossorigin="anonymous"></script>
-  <script type="module" crossorigin src="./assets/index.a26847c4.js"></script>
-  <link rel="stylesheet" href="./assets/index.fcda04e4.css">
+	<script type="module" crossorigin src="./assets/index.bd524b90.js"></script>
+	<link rel="stylesheet" href="./assets/index.949fa31d.css">
 </head>
 <body>
 	<canvas id="bg"></canvas>
@@ -45,6 +47,7 @@
 				<input id="usernameInput" type="text" required placeholder="GitHub Username">
 				<button class="btn-ghc" type="submit">Create!</button>
 			</form>
+			<p class="error" id="errorMessage">An error has occured, please check your username.</p>
 			<p class="disclaimer"><small>It is highly recommended to have hardware acceleration on</small></p>
 		</div>
 

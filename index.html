@@ -4,9 +4,12 @@
 	<!-- Meta tags -->
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+	<link rel="icon" type="image/svg+xml" href="./assets/favicon.4e54c816.svg" />
 	<title>GitHub City</title>
-
+	<meta name="description" content="GitHub City - Generate a 3D city with your GitHub contributions graph.">
+	<meta name="keywords" content="github, city, webgl, 3D, contributions">
+	<base href="/">
+	
 	<!-- Styles -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.5/css/selectize.min.css" integrity="sha512-zSutnLmqtlWVx0A5NdW8YwshpUETPzJ6YBAvb+bkE0QbVKopS0ACPjE6QY6F9aFPSowfiho+hgeQh095FRPj5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />	
 	<link rel="stylesheet" href="./style.scss">
@@ -42,6 +45,7 @@
 				<input id="usernameInput" type="text" required placeholder="GitHub Username">
 				<button class="btn-ghc" type="submit">Create!</button>
 			</form>
+			<p class="error" id="errorMessage">An error has occured, please check your username.</p>
 			<p class="disclaimer"><small>It is highly recommended to have hardware acceleration on</small></p>
 		</div>
 
