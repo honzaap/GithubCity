@@ -26,10 +26,11 @@ export function getConvertedContributions(contribs) {
         result.push(row);
     }
 
-    contribs.forEach((week, i) => {
-        week.contributionDays.forEach(day => {
+    for(let i = 0; i < contribs.length; i++){
+        for(let day of contribs[i].contributionDays){
             result[day.weekday][i] = day.contributionCount;
-        })
-    })
+
+        }
+    }
     return result;
 }
