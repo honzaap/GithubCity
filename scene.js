@@ -55,6 +55,25 @@ export function clearScene(scene){
     }
 }
 
+export function changeShadowPreset(scene, preset) {
+    for(let child of scene.children){
+        if(child.type === "DirectionalLight"){
+            if(preset == 1){
+                child.shadow.mapSize.x = 768;
+                child.shadow.mapSize.y = 768;
+                child.shadow.map.dispose();
+                child.shadow.map = null;
+            }
+            else if(preset == 2){
+                child.shadow.mapSize.x = 2048;
+                child.shadow.mapSize.y = 2048;
+                child.shadow.map.dispose();
+                child.shadow.map = null;
+            }
+        }
+    }
+}
+
 // Set shadows on given object to given settings
 function setShadow(obj, cast = false, receive = false){
     obj.castShadow = cast;
@@ -226,8 +245,8 @@ function setupLighting(scene) {
     const directionLight = new THREE.DirectionalLight(0xE9B37C);
     directionLight.position.set(-50, 50, -20);
     directionLight.castShadow = true;
-    directionLight.shadow.mapSize.x = 2048; 
-    directionLight.shadow.mapSize.y = 2048; 
+    directionLight.shadow.mapSize.x = 768; 
+    directionLight.shadow.mapSize.y = 768; 
     directionLight.shadow.camera.near = 15;
     directionLight.shadow.camera.far = 150.0;
     directionLight.shadow.camera.right =  75;

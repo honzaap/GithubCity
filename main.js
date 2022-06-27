@@ -1,4 +1,4 @@
-import { createScene, renderBuilding, renderRoad, renderGrass, clearScene } from "./scene";
+import { createScene, renderBuilding, renderRoad, renderGrass, clearScene, changeShadowPreset } from "./scene";
 import { initializeTiles, findTiles, getTileTypes } from "./algo";
 import { fetchContributions, getConvertedContributions } from "./api";
 import { INIT_CONTRIBUTIONS } from "./constants";
@@ -12,6 +12,7 @@ const selectionScreen = document.getElementById("selectionScreen");
 const titleLink = document.getElementById("title");
 const displayInfo = document.getElementById("displayInfo");
 const errorMessage = document.getElementById("errorMessage");
+const shadowPreset = document.getElementById("shadowPreset");
 
 // Populate year select with years down to 2008
 const currentYear = new Date().getFullYear();
@@ -82,6 +83,9 @@ titleLink.onclick = (e) => {
 	else autoRotateButton.classList.add("inactive");
 }
 
+shadowPreset.onchange = () => {
+	changeShadowPreset(scene, shadowPreset.value);
+}
 
 async function generateCityFromParams(name, year) {
 	// Get data from API

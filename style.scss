@@ -9,11 +9,18 @@
 	--green: #30E1B7;
 }
 
+canvas{
+	width: 100vw !important;
+	height: 100vh !important;
+}
+
 body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	min-height: 100vh;
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
 }
 
 h1 {
@@ -68,21 +75,23 @@ a {
 }
 
 .canvas-ui {
-	position: fixed;
+	position: absolute;
 	z-index: 1;
-	width: 100%;
-	height: 100%;
+	width: 100vw;
+	height: 100vh;
 	pointer-events: none;
+	overflow: hidden;
 	& .buttons-options {
 		position: absolute;
 		right: 0;
+		text-align: center;
 		top: 60%;
 		bottom: 20%;
 		padding-right: 1.5rem;
 		transition: opacity 400ms ease;
 	}
 	
-	& button, & a {
+	& button, & a, input {
 		pointer-events: all;
 	}
 }
@@ -108,7 +117,6 @@ nav {
 
 footer {
 	position: absolute;
-	width: 100%;
 	bottom: 0;
 	display: flex;
 	align-items: center;
@@ -225,4 +233,84 @@ footer {
 	display: block;
 	width: 100%;
 	text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.75);
+}
+
+.options-caption{
+	margin-top: 15px;
+	text-align: center;
+	color: #fff;
+	text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.75);
+}
+
+.mobile-rotate{
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	padding-top: 100px;
+	width: 100%;
+	height: 100%;
+	display: none;
+	font-size: 22px;
+	text-align: center;
+	color: #fff;
+	background: linear-gradient(-30deg, var(--yellow), var(--green));
+	pointer-events: all;
+	.ico-anim{
+		display: block;
+		margin-top: 16px;
+		font-size: 36px;
+		animation: mobile-rotate 2000ms ease-out infinite;
+	}
+	.caption{
+		margin-top: 40px;
+		font-size: 16px;
+	}
+}
+
+@media (max-width: 768px) {
+	footer{
+		font-size: 14px;
+	}
+	.canvas-ui .buttons-options{
+		font-size: 14px;
+		top: 30%;
+	}
+	.display-info{
+		font-size: 20px;
+	}
+	.nav-title{
+		font-size: 24px;
+	}
+	.selection-screen{
+		font-size: 16px;
+	}
+	h1{
+		font-size: 1.75rem;
+	}
+	.selection-screen h3{
+		margin: 20px 0;
+		font-size: 1.25rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.mobile-rotate{
+		display: block;
+	}
+	footer{
+		display: none;
+	}
+}
+
+@keyframes mobile-rotate {
+	0%{
+		transform: rotateZ(0deg);
+	}
+	80%{
+		transform: rotateZ(-90deg);
+	}
+	100%{
+		transform: rotateZ(-90deg);
+	}
 }
