@@ -4,12 +4,12 @@
 	<!-- Meta tags -->
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="icon" type="image/svg+xml" href="./assets/favicon.4e54c816.svg" />
+	<link rel="icon" type="image/svg+xml" href="./assets/favicon.7a6fa235.svg" />
 	<title>GitHub City</title>
 	<meta name="description" content="GitHub City - Generate a 3D city with your GitHub contributions graph.">
 	<meta name="keywords" content="github, city, webgl, 3D, contributions">
 	<base href="./">
-	
+
 	<!-- Styles -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.5/css/selectize.min.css" integrity="sha512-zSutnLmqtlWVx0A5NdW8YwshpUETPzJ6YBAvb+bkE0QbVKopS0ACPjE6QY6F9aFPSowfiho+hgeQh095FRPj5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />	
 	
@@ -25,8 +25,8 @@
 
 	<!-- Font awesome -->
 	<script src="https://kit.fontawesome.com/54904af69a.js" crossorigin="anonymous"></script>
-	<script type="module" crossorigin src="./assets/index.bd524b90.js"></script>
-	<link rel="stylesheet" href="./assets/index.949fa31d.css">
+  <script type="module" crossorigin src="./assets/index.e88c9766.js"></script>
+  <link rel="stylesheet" href="./assets/index.7e18db66.css">
 </head>
 <body>
 	<canvas id="bg"></canvas>
@@ -37,7 +37,7 @@
 				<a id="title" class="nav-title">GitHub City</a>
 			</nav>
 		</header>
-
+	
 		<!-- Selection screen -->
 		<div class="selection-screen" id="selectionScreen">
 			<h1>What would <strong>Your</strong> city look like?</h1>
@@ -54,11 +54,22 @@
 		<!-- Side options -->
 		<div class="buttons-options">
 			<button class="btn-ghc" id="autorotate" title="Toggle auto-rotate"><i class="fa-solid fa-rotate"></i></button>
+			<p class="options-caption">Shadow preset</p>
+			<input id="shadowPreset" type="range" min="1" max="2" value="1"/>
 		</div>
 
 		<!-- Upper name and year display -->
 		<div id="displayInfo" class="display-info">
 
+		</div>
+
+		<!-- Prompt to rotate mobile device -->
+		<div class="mobile-rotate">
+			<h4>Please rotate your device</h4>
+			<span class="ico-anim">
+				<i class="fa-solid fa-mobile"></i>
+			</span>
+			<p class="caption">For the best experience, visit this website on desktop.</p>
 		</div>
 
 		<footer>
@@ -68,6 +79,7 @@
 			</a>
 		</footer>
 	</div>
+	
 
 	<!-- GitHub Corner. Provided by https://github.com/cedoor -->
 	<a href="https://github.com/honzaap/GitHubCity" target="_blank" class="github-corner" style="z-index: 5000; position: absolute; top: 0; border: 0; right: 0;">
