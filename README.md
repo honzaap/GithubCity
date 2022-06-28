@@ -11,6 +11,10 @@
 ### What would Your city look like?
 <p><a href="https://honzaap.github.io/Systemizer/">Create</a> a 3D city from your GitHub contributions 🏙</p>
 
+### About
+<p>GitHub City uses ThreeJS to generate a 3D city from your GitHub contribution graph.</p>
+<p>Using hardware acceleration is highly recommended!</p>
+
 ## Installation
 1) Clone repository to your local machine
 2) Open terminal and `cd` into repository folder
