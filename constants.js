@@ -8,7 +8,7 @@ export const BUILDING_TYPES = {
             groundUrl: "building_1x1_0_g.glb",
             floorUrl: "building_1x1_0_f.glb",
             roofUrl: "building_1x1_0_r.glb",
-            min: 4,
+            min: 6,
             max: 999
         },
         {
@@ -17,10 +17,23 @@ export const BUILDING_TYPES = {
             max: 1
         },
         {
+            groundUrl: "building_1x1_1_g_aqua.glb",
+            min: 1,
+            max: 1
+        },
+        {
             groundUrl: "building_1x1_2_g.glb",
+            floorUrl: "building_1x1_2_f.glb",
             roofUrl: "building_1x1_2_r.glb",
             min: 2,
-            max: 2
+            max: 3
+        },
+        {
+            groundUrl: "building_1x1_2_g_pink.glb",
+            floorUrl: "building_1x1_2_f_pink.glb",
+            roofUrl: "building_1x1_2_r_pink.glb",
+            min: 2,
+            max: 3
         },
         {
             groundUrl: "building_1x1_3_g.glb",
@@ -99,8 +112,19 @@ export const BUILDING_TYPES = {
             max: 1  
         },
         {
+            groundUrl: "building_1x2_0_g_red.glb",
+            min: 1,
+            max: 1  
+        },
+        {
             groundUrl: "building_1x2_1_g.glb",
             roofUrl: "building_1x2_1_r.glb",
+            min: 2,
+            max: 2  
+        },
+        {
+            groundUrl: "building_1x2_1_g_beigepink.glb",
+            roofUrl: "building_1x2_1_r_beigepink.glb",
             min: 2,
             max: 2  
         },
@@ -108,6 +132,13 @@ export const BUILDING_TYPES = {
             groundUrl: "building_1x2_2_g.glb",
             floorUrl: "building_1x2_2_f.glb",
             roofUrl: "building_1x2_2_r.glb",
+            min: 2,
+            max: 6  
+        },
+        {
+            groundUrl: "building_1x2_2_g_blue.glb",
+            floorUrl: "building_1x2_2_f_blue.glb",
+            roofUrl: "building_1x2_2_r_blue.glb",
             min: 2,
             max: 6  
         },
@@ -163,6 +194,11 @@ export const BUILDING_TYPES = {
     2: [
         {
             groundUrl: "building_L_0_g.glb",
+            min: 1,
+            max: 1  
+        },
+        {
+            groundUrl: "building_L_0_g_beige.glb",
             min: 1,
             max: 1  
         },
