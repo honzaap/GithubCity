@@ -57,7 +57,7 @@ autoRotateButton.onclick = (e) => {
 // Submit form, get data and generate city
 infoForm.onsubmit = async (e) => {
 	e.preventDefault();
-	let name = usernameInput.value;
+	let name = usernameInput.value.trim();
 	let year = yearSelect.value;
 	enteredInfo = true;
 	let tempArray = window.location.href.split("?");
