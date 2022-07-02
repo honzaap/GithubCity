@@ -192,7 +192,7 @@ function createRenderer(scene, camera) {
     const renderer = new THREE.WebGLRenderer({
         powerPreference: "high-performance",
         antialias: true,
-        depth: false,
+        depth: true,
         canvas: document.querySelector("#bg")
     });
 
