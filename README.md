@@ -9,7 +9,7 @@
 </p>
 
 ### What would Your city look like?
-<p><a href="https://honzaap.github.io/Systemizer/">Create</a> a 3D city from your GitHub contributions 🏙</p>
+<p><a href="https://honzaap.github.io/GithubCity/">Create</a> a 3D city from your GitHub contributions 🏙</p>
 
 ### About
 <p>GitHub City uses ThreeJS to generate a 3D city from your GitHub contribution graph.</p>
