@@ -22,5 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.eslintcache
+.stylelintcache
 
 blender_assets
