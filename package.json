@@ -20,7 +20,7 @@
         "start": "open http://localhost:3000 && node main.js"
     },
     "lint-staged": {
-        "*.{js,jsx,html,ts,tsx}": [
+        "*.{js,jsx,ts,tsx}": [
             "eslint --fix",
             "prettier --write"
         ],
@@ -28,7 +28,7 @@
             "stylelint --fix",
             "prettier --write"
         ],
-        "*.{json,md,yml}": [
+        "*.{html,json,md,yml}": [
             "prettier --write"
         ]
     },
