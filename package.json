@@ -7,9 +7,17 @@
     "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "open http://localhost:3000 && node main.js"
+    "start": "open http://localhost:3000 && node main.js",
+    "lint": "eslint --cache --check . && prettier --cache --check .",
+    "format": "eslint --cache --fix . && prettier --cache --write ."
   },
   "devDependencies": {
+    "eslint": "^8.20.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.4",
+    "eslint-plugin-promise": "^6.0.0",
+    "prettier": "^2.7.1",
     "sass": "^1.52.3",
     "vite": "^2.9.7"
   },
