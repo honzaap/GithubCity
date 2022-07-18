@@ -1,9 +1,10 @@
 /*
- *  Things that handle all the 3D stuff 
+ *  Things that handle all the 3D stuff
  */
 
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { STLExporter } from "three/examples/jsm/exporters/STLExporter";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { EffectComposer,RenderPass } from "postprocessing";
 import { FLOOR_HEIGHT, GRASS_ASSET, ROAD_TYPES, ENVIRONMENT_ASSET, ENVIRONMENT_OBJECTS_ASSET, TREES_SMALL, ENVIRONMENT_ANIMATED_ASSET } from "./constants";
@@ -24,7 +25,7 @@ export function createScene() {
     const controls = createControls(camera, renderer);
 
     const composer = setupPostProcessing(scene, camera, renderer);
-    
+
     const clock = new THREE.Clock();
 
     // Animation loop
@@ -38,7 +39,7 @@ export function createScene() {
     }
     animate();
 
-    // Resize renderer when window size changes 
+    // Resize renderer when window size changes
     window.onresize = () => {
         resizeRenderer(renderer);
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -77,7 +78,7 @@ export function changeShadowPreset(scene, preset) {
 // Set shadows on given object to given settings
 function setShadow(obj, cast = false, receive = false){
     obj.castShadow = cast;
-    obj.receiveShadow = receive;    
+    obj.receiveShadow = receive;
     if(obj?.children != null){
         for(let child of obj.children){
             setShadow(child, cast, receive);
@@ -164,22 +165,30 @@ export function renderGrass(x, y, z, scene){
         console.error(error);
     } );
 
-    // Create a tree somewhere on the tile 
+    // Create a tree somewhere on the tile
     for(let i of [-0.7, 0.7]){
         loader.load(`./assets/${TREES_SMALL[Math.floor(TREES_SMALL.length * Math.random())]}`, function(gltf) {
             gltf.scene.position.x = x + Math.random() * i;
             gltf.scene.position.y = y;
             gltf.scene.position.z = z + Math.random() * i;
-    
+
             setShadow(gltf.scene, true, false);
-    
+
             gltf.scene.name = "Tree";
             scene.add(gltf.scene);
         })
     }
 }
 
-// Create and cofigure camera and return it 
+// Convert given scene into STL
+export function convertSceneToStlBlobUrl(scene) {
+    const exporter = new STLExporter();
+    const str = exporter.parse(scene);
+    const blob = new Blob([str], { type: 'text/plain' });
+    return URL.createObjectURL(blob)
+}
+
+// Create and cofigure camera and return it
 function createCamera() {
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 400);
     camera.position.set(0, 30, 51);
@@ -187,7 +196,7 @@ function createCamera() {
     return camera;
 }
 
-// Create and configure renderer and return it 
+// Create and configure renderer and return it
 function createRenderer(scene, camera) {
     const renderer = new THREE.WebGLRenderer({
         powerPreference: "high-performance",
@@ -212,7 +221,7 @@ function resizeRenderer(renderer) {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-// Create and configure controls and return it 
+// Create and configure controls and return it
 function createControls(camera, renderer) {
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.autoRotate = true;
@@ -234,10 +243,10 @@ function setupPostProcessing(scene, camera, renderer) {
     return composer;
 }
 
-// Create and configure lighting in the scene  
+// Create and configure lighting in the scene
 function setupLighting(scene) {
     // Ambient lighting
-    const ambientLight = new THREE.AmbientLight(0x9AD0EC, 0.7); 
+    const ambientLight = new THREE.AmbientLight(0x9AD0EC, 0.7);
     //const ambientLight = new THREE.AmbientLight(0x9AD0EC, 1);
     scene.add(ambientLight);
 
@@ -245,18 +254,18 @@ function setupLighting(scene) {
     const directionLight = new THREE.DirectionalLight(0xE9B37C);
     directionLight.position.set(-50, 50, -20);
     directionLight.castShadow = true;
-    directionLight.shadow.mapSize.x = 768; 
-    directionLight.shadow.mapSize.y = 768; 
+    directionLight.shadow.mapSize.x = 768;
+    directionLight.shadow.mapSize.y = 768;
     directionLight.shadow.camera.near = 15;
     directionLight.shadow.camera.far = 150.0;
     directionLight.shadow.camera.right =  75;
     directionLight.shadow.camera.left = -75;
     directionLight.shadow.camera.top =  75;
     directionLight.shadow.camera.bottom = -75;
-    scene.add(directionLight);                                       
+    scene.add(directionLight);
 }
 
-// Create and setup anything environment-related 
+// Create and setup anything environment-related
 function setupEnvironment(scene) {
     const sceneBackground = new THREE.Color(0x9AD0EC);
     scene.background = sceneBackground;
@@ -290,7 +299,7 @@ function setupEnvironment(scene) {
         env_animated.position.set(...position);
         setShadow(gltf.scene, true, false);
 
-        // Setup animation mixer and play all animations 
+        // Setup animation mixer and play all animations
         mixer = new THREE.AnimationMixer(env_animated);
         const clips = gltf.animations;
 

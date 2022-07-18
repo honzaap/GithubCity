@@ -1,10 +1,12 @@
-import { createScene, renderBuilding, renderRoad, renderGrass, clearScene, changeShadowPreset } from "./scene";
+import { createScene, renderBuilding, renderRoad, renderGrass, clearScene, changeShadowPreset, convertSceneToStlBlobUrl } from "./scene";
 import { initializeTiles, findTiles, getTileTypes } from "./algo";
 import { fetchContributions, getConvertedContributions } from "./api";
 import { INIT_CONTRIBUTIONS } from "./constants";
 
 // Get HTML elements
 const autoRotateButton = document.getElementById("autorotate");
+const downloadButton = document.getElementById("download");
+const downloadButtonAnchor = document.getElementById("download-a");
 const yearSelect = document.getElementById("yearSelect");
 const usernameInput = document.getElementById("usernameInput");
 const infoForm = document.getElementById("infoForm");
@@ -25,7 +27,7 @@ for(let y = currentYear; y >= 2008; y--){
 
 // Create 3D environment
 const { scene, controls } = createScene();
-const renderShiftX = -26; 
+const renderShiftX = -26;
 const renderShiftY = -4;
 const renderShiftZ = 0.38;
 
@@ -101,8 +103,14 @@ async function generateCityFromParams(name, year) {
 	selectionScreen.classList.add("hidden");
 	displayInfo.innerHTML = `<span>${name}</span> <span>${year}</span>`;
 
-	// Render data 
+	// Render data
 	generateCity(contribs);
+
+	// Set download
+	downloadButton.onclick = (e) => {
+		e.preventDefault();
+		download(name, year, scene);
+	}
 }
 
 // Get the 2D array containing contributions and make stuff happen
@@ -128,8 +136,15 @@ function generateCity(contribs) {
 				renderRoad(x, -.015, z, tileTypes[i][j], scene);
 			}
 			else if(tileType.tile === 2){ // Render building tiles
-				renderBuilding(x, 2 * renderShiftZ, z, tileTypes[i][j], scene); 
+				renderBuilding(x, 2 * renderShiftZ, z, tileTypes[i][j], scene);
 			}
 		}
 	}
+}
+
+function download(name, year, scene) {
+	const blobUrl = convertSceneToStlBlobUrl(scene);
+	downloadButtonAnchor.href = blobUrl;
+	downloadButtonAnchor.download = `${name}-${year}-city.stl`;
+	downloadButtonAnchor.click()
 }
