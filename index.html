@@ -11,13 +11,13 @@
 	<base href="./">
 
 	<!-- Styles -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.5/css/selectize.min.css" integrity="sha512-zSutnLmqtlWVx0A5NdW8YwshpUETPzJ6YBAvb+bkE0QbVKopS0ACPjE6QY6F9aFPSowfiho+hgeQh095FRPj5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.5/css/selectize.min.css" integrity="sha512-zSutnLmqtlWVx0A5NdW8YwshpUETPzJ6YBAvb+bkE0QbVKopS0ACPjE6QY6F9aFPSowfiho+hgeQh095FRPj5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="./style.scss">
-	
+
 	<!-- Scripts -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.5/js/standalone/selectize.min.js" integrity="sha512-JFjt3Gb92wFay5Pu6b0UCH9JIOkOGEfjIi7yykNWUwj55DBBp79VIJ9EPUzNimZ6FvX41jlTHpWFUQjog8P/sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	
+
 	<!--  Google fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,14 +28,14 @@
 </head>
 <body>
 	<canvas id="bg"></canvas>
-	
+
 	<div class="canvas-ui">
 		<header>
 			<nav>
 				<a id="title" class="nav-title">GitHub City</a>
 			</nav>
 		</header>
-	
+
 		<!-- Selection screen -->
 		<div class="selection-screen" id="selectionScreen">
 			<h1>What would <strong>Your</strong> city look like?</h1>
@@ -51,7 +51,13 @@
 
 		<!-- Side options -->
 		<div class="buttons-options">
-			<button class="btn-ghc" id="autorotate" title="Toggle auto-rotate"><i class="fa-solid fa-rotate"></i></button>
+			<a id="download-a"></a>
+			<button class="btn-ghc" id="download" title="Download the City's 3D model as a STL file">
+				<i class="fa-solid fa-download"></i>
+			</button>
+			<button class="btn-ghc" id="autorotate" title="Toggle auto-rotate">
+				<i class="fa-solid fa-rotate"></i>
+			</button>
 			<p class="options-caption">Shadow preset</p>
 			<input id="shadowPreset" type="range" min="1" max="2" value="1"/>
 		</div>
@@ -71,13 +77,12 @@
 		</div>
 
 		<footer>
-			<a href="https://github.com/honzaap/GitHubCity/issues" class="footer-link"> 
+			<a href="https://github.com/honzaap/GitHubCity/issues" class="footer-link">
 				<i class="fa-solid fa-bug"></i>
 				Report a bug
 			</a>
 		</footer>
 	</div>
-	
 
 	<!-- GitHub Corner. Provided by https://github.com/cedoor -->
 	<a href="https://github.com/honzaap/GitHubCity" target="_blank" class="github-corner" style="z-index: 5000; position: absolute; top: 0; border: 0; right: 0;">
@@ -94,10 +99,10 @@
 	<!-- End GitHub Corner. -->
 	<script type="module" src="/main.js"></script>
 
-	    <script>
-            $(function () {
-              $("select").selectize();
-            });
-          </script>
+	<script>
+		$(function () {
+			$("select").selectize();
+		});
+	</script>
 </body>
 </html>

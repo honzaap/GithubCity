@@ -58,12 +58,10 @@ small {
 	transition: filter 250ms ease;
 	&:hover {
 		filter: none;
-	}	
-	
+	}
 	&.inactive{
 		filter: grayscale(1) brightness(1.1);
 	}
-	
 	&.inactive:hover{
 		filter: grayscale(1);
 	}
@@ -83,6 +81,10 @@ a {
 	overflow: hidden;
 	& .buttons-options {
 		position: absolute;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 15px;
 		right: 0;
 		text-align: center;
 		top: 60%;
@@ -90,7 +92,6 @@ a {
 		padding-right: 1.5rem;
 		transition: opacity 400ms ease;
 	}
-	
 	& button, & a, input {
 		pointer-events: all;
 	}
@@ -218,7 +219,7 @@ footer {
 	background-color: transparent !important;
     font-size: inherit;
     color: #fff;
-    box-shadow: none; 
+    box-shadow: none;
     border-radius: 0;
 }
 
@@ -236,8 +237,6 @@ footer {
 }
 
 .options-caption{
-	margin-top: 15px;
-	text-align: center;
 	color: #fff;
 	text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.75);
 }
