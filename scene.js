@@ -213,12 +213,11 @@ export function renderGrass(x, y, z, scene) {
     }
 }
 
-// Convert given scene into STL
-export function convertSceneToStlBlobUrl(scene) {
+// Convert given scene into STL blob
+export function convertSceneToStlBlob(scene) {
     const exporter = new STLExporter();
     const str = exporter.parse(scene);
-    const blob = new Blob([str], { type: "text/plain" });
-    return URL.createObjectURL(blob);
+    return new Blob([str], { type: "text/plain" });
 }
 
 // Create and cofigure camera and return it

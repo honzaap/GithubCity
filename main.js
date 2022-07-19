@@ -1,10 +1,12 @@
+import { saveAs } from "file-saver";
+
 import { findTiles, getTileTypes, initializeTiles } from "./algo";
 import { fetchContributions, getConvertedContributions } from "./api";
 import { INIT_CONTRIBUTIONS } from "./constants";
 import {
     changeShadowPreset,
     clearScene,
-    convertSceneToStlBlobUrl,
+    convertSceneToStlBlob,
     createScene,
     renderBuilding,
     renderGrass,
@@ -14,7 +16,6 @@ import {
 // Get HTML elements
 const autoRotateButton = document.getElementById("autorotate");
 const downloadButton = document.getElementById("download");
-const downloadButtonAnchor = document.getElementById("download-a");
 const yearSelect = document.getElementById("yearSelect");
 const usernameInput = document.getElementById("usernameInput");
 const infoForm = document.getElementById("infoForm");
@@ -111,10 +112,10 @@ async function generateCityFromParams(name, year) {
     // Render data
     generateCity(contribs);
 
-    // Set download
     downloadButton.onclick = (e) => {
         e.preventDefault();
-        download(name, year, scene);
+        const blob = convertSceneToStlBlob(scene);
+        saveAs(blob, `${name}-${year}-city.stl`);
     };
 }
 
@@ -146,11 +147,4 @@ function generateCity(contribs) {
             }
         }
     }
-}
-
-function download(name, year, scene) {
-    const blobUrl = convertSceneToStlBlobUrl(scene);
-    downloadButtonAnchor.href = blobUrl;
-    downloadButtonAnchor.download = `${name}-${year}-city.stl`;
-    downloadButtonAnchor.click();
 }
