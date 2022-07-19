@@ -84,6 +84,7 @@ titleLink.onclick = (e) => {
     } else {
         selectionScreen.classList.remove("hidden");
         controls.autoRotate = true;
+        infoForm.style.display = "";
         errorMessage.style.display = "none";
     }
 
@@ -107,6 +108,7 @@ async function generateCityFromParams(name, year) {
     const contribs = getConvertedContributions(apiContribs);
 
     selectionScreen.classList.add("hidden");
+    infoForm.style.display = "none";
     displayInfo.innerHTML = `<span>${name}</span> <span>${year}</span>`;
 
     // Render data
