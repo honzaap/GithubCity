@@ -1,20 +1,62 @@
 {
-  "name": "threejs",
-  "private": true,
-  "version": "0.0.0",
-  "main": "main.js",
-  "scripts": {
-    "dev": "vite --host",
-    "build": "vite build",
-    "preview": "vite preview",
-    "start": "open http://localhost:3000 && node main.js"
-  },
-  "devDependencies": {
-    "sass": "^1.52.3",
-    "vite": "^2.9.7"
-  },
-  "dependencies": {
-    "postprocessing": "^6.27.0",
-    "three": "^0.140.2"
-  }
+    "name": "threejs",
+    "private": true,
+    "version": "0.0.0",
+    "main": "main.js",
+    "scripts": {
+        "dev": "vite --host",
+        "build": "vite build",
+        "format": "run-p -l format:*",
+        "format:eslint": "eslint --fix .",
+        "format:prettier": "prettier --write .",
+        "format:stylelint": "stylelint --allow-empty-input --fix --mw=0 \"**/*.scss\"",
+        "lint": "run-p -l lint:*",
+        "lint:eslint": "eslint --cache .",
+        "lint:prettier": "prettier --cache --check .",
+        "lint:stylelint": "stylelint --allow-empty-input --cache --mw=0 \"**/*.scss\"",
+        "lint-staged": "lint-staged",
+        "prepare": "husky install",
+        "preview": "vite preview",
+        "start": "open http://localhost:3000 && node main.js"
+    },
+    "lint-staged": {
+        "*.{js,jsx,ts,tsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ],
+        "*.{css,less,sass,scss}": [
+            "stylelint --fix",
+            "prettier --write"
+        ],
+        "*.{html,json,md,yml}": [
+            "prettier --write"
+        ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "devDependencies": {
+        "eslint": "^8.20.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-config-standard": "^17.0.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-n": "^15.2.4",
+        "eslint-plugin-promise": "^6.0.0",
+        "eslint-plugin-simple-import-sort": "^7.0.0",
+        "husky": "^7.0.0",
+        "lint-staged": "^13.0.3",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.7.1",
+        "sass": "^1.52.3",
+        "stylelint": "^14.9.1",
+        "stylelint-config-recommended-scss": "^7.0.0",
+        "stylelint-scss": "^4.3.0",
+        "vite": "^2.9.7"
+    },
+    "dependencies": {
+        "postprocessing": "^6.27.0",
+        "three": "^0.140.2"
+    }
 }
