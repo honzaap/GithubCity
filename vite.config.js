@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
     server: {
-        host: true, // IPアドレスを有効化
+        host: true,
     },
     root: "./src",
     base: "/GithubCity/",
