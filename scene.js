@@ -69,6 +69,7 @@ export function clearScene(scene) {
 export function changeShadowPreset(scene, preset) {
     for (const child of scene.children) {
         if (child.type === "DirectionalLight") {
+            if (typeof preset === "string") preset = parseInt(preset);
             if (preset === 1) {
                 child.shadow.mapSize.x = 768;
                 child.shadow.mapSize.y = 768;
