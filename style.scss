@@ -184,8 +184,7 @@ footer {
 }
 
 .input-form {
-    input,
-    .selectize-control {
+    input {
         display: inline-block;
         text-align: left;
         padding: 1.35em 1rem;
@@ -204,35 +203,24 @@ footer {
         margin: 0 0.2rem;
     }
 
-    input {
+    #yearSelect {
+        width: 80px;
+        cursor: pointer;
+        &::placeholder {
+            color: #fff;
+        }
+    }
+
+    #usernameInput {
         margin-right: 1rem;
         &::placeholder {
             color: rgba(255, 255, 255, 0.6);
         }
     }
 
-    .selectize-control {
-        width: 80px;
-    }
-
     button {
         padding: 1.35em 2.5rem;
     }
-}
-
-.selectize-input,
-.selectize-input.full {
-    border: 0;
-    padding: 0;
-    background-color: transparent !important;
-    font-size: inherit;
-    color: #fff;
-    box-shadow: none;
-    border-radius: 0;
-}
-
-.selectize-drowdown {
-    margin-top: 1.1em !important;
 }
 
 .disclaimer {

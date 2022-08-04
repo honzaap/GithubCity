@@ -17,6 +17,7 @@ import {
 const autoRotateButton = document.getElementById("autorotate");
 const downloadButton = document.getElementById("download");
 const yearSelect = document.getElementById("yearSelect");
+const yearsData = document.getElementById("yearsData");
 const usernameInput = document.getElementById("usernameInput");
 const infoForm = document.getElementById("infoForm");
 const selectionScreen = document.getElementById("selectionScreen");
@@ -31,7 +32,7 @@ for (let y = currentYear; y >= 2008; y--) {
     const option = document.createElement("option");
     option.value = y;
     option.innerHTML = y;
-    yearSelect.appendChild(option);
+    yearsData.appendChild(option);
 }
 
 // Create 3D environment

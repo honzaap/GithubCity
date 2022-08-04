@@ -68,20 +68,6 @@
         />
         <link rel="stylesheet" href="./style.scss" />
 
-        <!-- Scripts -->
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-        ></script>
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.5/js/standalone/selectize.min.js"
-            integrity="sha512-JFjt3Gb92wFay5Pu6b0UCH9JIOkOGEfjIi7yykNWUwj55DBBp79VIJ9EPUzNimZ6FvX41jlTHpWFUQjog8P/sw=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-        ></script>
-
         <!--  Google fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -111,11 +97,14 @@
                 <h1>What would <strong>Your</strong> city look like?</h1>
                 <h3>Create a 3D city from your GitHub contributions.</h3>
                 <form class="input-form" id="infoForm">
-                    <select
-                        name="year_select"
+                    <input
                         id="yearSelect"
+                        list="yearsData"
+                        type="text"
+                        value="2022"
                         required
-                    ></select>
+                    />
+                    <datalist id="yearsData"></datalist>
                     <input
                         id="usernameInput"
                         type="text"
@@ -261,11 +250,5 @@
         </style>
         <!-- End GitHub Corner. -->
         <script type="module" src="/main.js"></script>
-
-        <script>
-            $(function () {
-                $("select").selectize();
-            });
-        </script>
     </body>
 </html>
